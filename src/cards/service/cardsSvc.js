@@ -1,8 +1,8 @@
-const Card = require('../models/Card');
+const Card = require('../models/Card')
 
 const createNewCard = async (card) => {
     try{
-        let newCard = new Card(card);
+        let newCard = new Card(card)
         newCard = await newCard.save();
         return newCard;
     }
@@ -13,7 +13,7 @@ const createNewCard = async (card) => {
 
 const getCards = async () => {
     try{
-        let cards = await Card.find();
+        const cards = await Card.find()
         return cards;
     }
     catch(err){
@@ -21,4 +21,4 @@ const getCards = async () => {
     }
 }
 
-module.exports = {createNewCard, getCards};
+module.exports = {createNewCard, getCards}
