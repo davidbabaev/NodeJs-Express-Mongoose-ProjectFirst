@@ -1,7 +1,7 @@
 const EMAIL = {
     type: String,
     required: true,
-    match: /^(?!\.)(?!.*\.\.)[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+(?<!\.)@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*\.[a-zA-Z]{2,}$/,
+    match: RegExp(/^(?!\.)(?!.*\.\.)[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+(?<!\.)@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*\.[a-zA-Z]{2,}$/),
     trim: true,
     unique: true,
 };
@@ -9,7 +9,7 @@ const EMAIL = {
 const URL = {
     type: String,
     required: true,
-    match: /^(https?:\/\/)(localhost|((?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}))(?::\d{2,5})?(?:\/[^\s]*)?$/,
+    match: RegExp(/^(https?:\/\/)(localhost|((?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}))(?::\d{2,5})?(?:\/[^\s]*)?$/),
     trim: true,
 };
 
