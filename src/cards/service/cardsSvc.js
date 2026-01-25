@@ -21,4 +21,14 @@ const getCards = async () => {
     }
 }
 
-module.exports = {createNewCard, getCards}
+const getCard = async (cardId) => {
+    try{
+        const card = await Card.findById(cardId)
+        return card;
+    }
+    catch(err){
+        throw new Error(err.message)
+    }
+}
+
+module.exports = {createNewCard, getCards, getCard}
