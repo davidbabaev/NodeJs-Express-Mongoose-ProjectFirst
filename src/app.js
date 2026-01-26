@@ -4,8 +4,8 @@ const express = require('express');
 const app = express();
 app.use(express.json());
 
-const cardsRouter = require('../src/cards/routes/cardsRoutes')
-app.use(cardsRouter) // connect router to app
+const router = require('./router/router');
+app.use(router) // connect router to app
 
 const PORT = 8181;
 
@@ -18,8 +18,6 @@ const connectToDB = async() => {
         console.log(err.message);
     }
 }
-
-
 
 app.listen(PORT, () => {
     console.log('listening');
