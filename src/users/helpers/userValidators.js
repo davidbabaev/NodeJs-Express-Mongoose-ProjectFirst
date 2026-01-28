@@ -31,6 +31,12 @@ const PHONE = {
   match: RegExp(/0[0-9]{1,2}\-?\s?[0-9]{3}\s?[0-9]{4}/),
 };
 
+const PASSWORD = {
+    type: String,
+    required: true,
+    match: RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/)
+}
+
 // For actual numbers (like houseNumber, zip, bizNumber)
 const NUMBER = {
   type: Number,
@@ -38,4 +44,4 @@ const NUMBER = {
   min: 0,
 };
 
-module.exports = { URL, EMAIL, DEFAULT_VALIDATOR, PHONE, NUMBER };
+module.exports = { URL, EMAIL, DEFAULT_VALIDATOR, PHONE, NUMBER, PASSWORD};
