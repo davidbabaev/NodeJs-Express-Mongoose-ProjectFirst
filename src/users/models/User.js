@@ -6,7 +6,7 @@ const {
     PHONE, 
     NUMBER, 
     PASSWORD
-} = require('../helpers/userValidators')
+} = require('../helpers/userValidators') 
 
 const UserSchema = new mongoose.Schema({
     firstName: DEFAULT_VALIDATOR,
