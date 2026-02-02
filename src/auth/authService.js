@@ -1,14 +1,13 @@
-
 const auth = (req, res, next) => {
+    // 1) check it the header exists
     if(req.header('x-auth-token')){
-        console.log('this user is authenticated');
-        next();
-        // if the user have token we move to the next middlware 
+        // 2) token exists --> let them through
+        console.log('user is authenticated');
+        next()
     }
-    else{
-        console.log('this user is not authenticated');
-        res.status(401).send('user in not authorized');
-    }
+    // 3) no token --> block them
+    console.log('user is not authenticated');
+    res.status(401).send('User is not authorized')
 }
 
 module.exports = auth;

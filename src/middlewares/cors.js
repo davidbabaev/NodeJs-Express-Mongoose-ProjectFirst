@@ -11,3 +11,4 @@ const corsPolicyMiddleware = (cors({
 }))
 
 module.exports = corsPolicyMiddleware;
+
