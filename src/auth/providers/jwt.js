@@ -1,31 +1,34 @@
 const jwt = require('jsonwebtoken');
 
-const SECRET_WORD = 'davidsecretword';
+const SECRET_TOKEN = 'secretword'
 
-// called when user logs in - created a token
-const generateAuthToken = (user) => {
-
-    // use jwt.sign() here
-    const token = jwt.sign(
-        {_id: user._id, isAdmin: user.isAdmin}, // --> payload - wht we store
-        SECRET_WORD // our secret stamp
-    );
-
-    return token;
-};
-
-const verifyToken = (tokenFromClient) => {
-    // important: jwt.verify() throws an error if token is invalid, so we need try/ catch
+// function for sign token
+const signNewToken = (user) => {
     try{
-        // if token is valid, jwt.verify returns the payload
-        const payload = jwt.verify(tokenFromClient, SECRET_WORD);
-        return payload; // token in good
+        const signed_token = jwt.sign(
+            {userId: user._id, isAdmin: user.isAdmin},
+            SECRET_TOKEN
+        )
+        return signed_token;
     }
     catch(err){
-        // if token is fake/ expired, jwt. verify throws error
-        // we catch it and return null
-        return null; // token is bad
+        throw new Error(err.message)
     }
-};
+}
 
-module.exports = {generateAuthToken, verifyToken};
+// function for verify token
+const verifyToken = (tokenFromHeader) => {
+
+    try{
+        const verified = jwt.verify(
+            tokenFromHeader,
+            SECRET_TOKEN
+        )
+        return verified
+    }
+    catch(err){
+        throw new Error(err.message)
+    }
+}
+
+module.exports = {signNewToken, verifyToken};
