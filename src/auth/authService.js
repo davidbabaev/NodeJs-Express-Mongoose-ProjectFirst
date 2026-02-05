@@ -4,17 +4,16 @@ const auth = (req, res, next) => {
     try{
         const token = req.header('auth-token')
         if(!token){
-            return res.status(401).send('no token exist');
+            return res.status(401).send('No token provided')
+            // without return the code keeps going.
         }
-
-        const decoded = verifyToken(token);
-        
+        const decoded = verifyToken(token)
         req.user = decoded;
-        next();
+        next()
     }
     catch(err){
-        res.status(401).send(err.message);
-    } 
+        res.status(401).send('Auth token invalid')
+    }
 }
 
 module.exports = auth;

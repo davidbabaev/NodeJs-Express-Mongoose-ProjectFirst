@@ -1,8 +1,7 @@
 const jwt = require('jsonwebtoken');
 
-const SECRET_TOKEN = 'secretword'
+const SECRET_TOKEN = 'davidsecret';
 
-// function for sign token
 const signNewToken = (user) => {
     try{
         const signed_token = jwt.sign(
@@ -12,22 +11,20 @@ const signNewToken = (user) => {
         return signed_token;
     }
     catch(err){
-        throw new Error(err.message)
+        throw new Error(err.message);
     }
 }
 
-// function for verify token
 const verifyToken = (tokenFromHeader) => {
-
     try{
         const verified = jwt.verify(
             tokenFromHeader,
             SECRET_TOKEN
         )
-        return verified
+        return verified;
     }
     catch(err){
-        throw new Error(err.message)
+        throw new Error(err.message);
     }
 }
 
