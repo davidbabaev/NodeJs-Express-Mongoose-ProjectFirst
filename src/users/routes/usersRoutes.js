@@ -4,15 +4,13 @@
 const express = require('express');
 const router = express.Router();
 
-// wrong approach, we don't need to import to here router
-// const router = require('../../router/router');
-
 const {
     createNewUser, 
     getUsers, 
     getUser, 
     updateUser, 
-    deleteUser
+    deleteUser,
+    loginUser,
 } = require('../service/usersSvc')
 
 
@@ -39,7 +37,6 @@ router.get('/users/:id', async (req, res) => {
 router.post('/users', async (req, res) => {
     try{
         const newUser = await createNewUser(req.body);
-        // newUser.save(); <- unnecessary
         res.send(newUser);
     }
     catch(err){
@@ -47,12 +44,19 @@ router.post('/users', async (req, res) => {
     }
 })
 
+router.post('/users/login', async (req,res) => {
+    try{
+        const token = await loginUser(req.body);
+        res.send(token);
+    }
+    catch(err){
+        res.status(400).send(err.message)
+    }
+})
+
 router.put('/users/:id', async (req, res) => {
     try{
         let updatedUser = await updateUser(req.params.id, req.body)
-        // updatedUser = updatedUser.save(); <-- unnecessary!
-        // findByIdAndUpdate() already finds and saves in one operation.
-        // the data is already presisted to mongoDB when it returns.
         res.send(updatedUser);
     }   
     catch(err){
