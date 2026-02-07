@@ -36,7 +36,6 @@ const loginUser = async ({email, password}) => {
         // password correct --> generate JWT token
         const token = signNewToken(user);
         return token;
-
     }
     catch(err){
         throw new Error(err.message)

@@ -1,6 +1,5 @@
-// CRUD operations - express, routes
+// CRUD operations - requests:
 
-// const mongoose = require('mongoose');
 const express = require('express');
 const router = express.Router();
 

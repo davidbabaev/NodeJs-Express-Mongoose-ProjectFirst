@@ -21,7 +21,11 @@ const UserSchema = new mongoose.Schema({
         street: DEFAULT_VALIDATOR,
         house: NUMBER,
         zip: NUMBER
-    }
+    },
+    isAdmin: {
+        type: Boolean,
+        default: false
+    },
 })
 
 const User = mongoose.model('User', UserSchema);

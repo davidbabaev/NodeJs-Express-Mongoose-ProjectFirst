@@ -8,7 +8,7 @@ const auth = (req, res, next) => {
             // without return the code keeps going.
         }
         const decoded = verifyToken(token)
-        req.user = decoded;
+        // req.user = decoded;
         next()
     }
     catch(err){
