@@ -12,3 +12,4 @@
 | 2.2.2026 | Error Handle & JWT | [Notes](https://docs.google.com/document/d/1GhJutaYuQU5UfgyLvfT13uV_bKIiLEYZvPMoeqNHa7w/edit?usp=sharing) |
 | 5.2.2026 | bcrypt | [Notes](https://docs.google.com/document/d/12iNBqNbOzp6984c4nN5FxRqiPJ8kXeoeh8TiyaBQRhs/edit?usp=sharing) |
 | 7.2.2026 | bcrypt, JWT, auth | [Notes](https://docs.google.com/document/d/1_xqzOIX6cnRng9pqMxtDMthB2nFt3A5RzqyEfvlcu8Y/edit?usp=sharing) |
+| 8.2.2026 | lodash, chalk | [Notes](https://docs.google.com/document/d/1G7nZcK5M_OClhyMrUyG5sKv7q6v15nSfkIieoQc1jo0/edit?usp=sharing) |
