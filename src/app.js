@@ -7,6 +7,7 @@ app.use(express.json());
 
 const router = require('./router/router');
 const connectToDB = require('./dbService');
+const chalk = require('chalk');
 
 app.use((req, res, next) => {
     console.log('new request has been recieved');
@@ -25,6 +26,6 @@ app.use((err, req, res, next ) => {
 })
 
 app.listen(PORT, () => {
-    console.log('listening');
+    console.log(chalk.yellow('App is listening to port', PORT));
     connectToDB();
 })

@@ -1,21 +1,20 @@
 const User = require('../models/User');
+const _ = require('lodash');
 const {generateUserPassword, comparePassword} = require('../helpers/bcrypt');
 const {signNewToken} = require('../../auth/providers/jwt');
  
 // MongoDB operation
 
 const createNewUser = async (user) => {
-    // saves the password as plain text:
     try{
-        // hash the password before saving to mongoDB:
         user.password = await generateUserPassword(user.password)
-        // You overwrite user.password with this hashed version
 
         let newUser = new User(user);
-        // Now when new User(user) creates the Mongoose document, the password field contains the hash, not the plain text
         newUser = await newUser.save();
-        // .save() stores the hashed version in MongoDB
-        return newUser;
+
+        // instead if returning the full newUser (with password)
+        // we create a new object with only these 4 fields
+        return _.pick(newUser, ["firstName", "lasName", "email", "_id"])
     }
     catch(err){
         throw new Error(err.message)
