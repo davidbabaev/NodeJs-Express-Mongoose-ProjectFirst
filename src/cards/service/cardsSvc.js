@@ -1,3 +1,4 @@
+const { createError } = require('../../utils/handleErrors');
 const Card = require('../models/Card')
 
 const createNewCard = async (card) => {
@@ -7,54 +8,37 @@ const createNewCard = async (card) => {
         return newCard;
     }
     catch(err){
-        throw new Error(err.message)
+        throw err;
     }
 }
 
 const getCards = async () => {
-    try{
         const cards = await Card.find()
         return cards;
-    }
-    catch(err){
-        throw new Error(err.message)
-    }
 }
 
 const getCard = async (cardId) => {
-    try{
         const card = await Card.findById(cardId)
+        if(!card) throw createError(404, "Card not found")
         return card;
-    }
-    catch(err){
-        throw new Error(err.message)
-    }
 }
 
 const updateCard = async (cardId, upCard) => {
-    try{
         let updatedCard = await Card.findByIdAndUpdate(cardId, upCard, {new: true});
+        if(!updatedCard) throw createError(404, "Cannot update card ");
         return updatedCard;
-    }
-    catch(err){
-        throw new Error(err.message)
-    }
 }
 
 const deleteCard = async (cardId) => {
-    try{
         const deletedCard = await Card.findByIdAndDelete(cardId);
+        if(!deletedCard) throw createError(404, "Cannot delete card")
         return deletedCard;
-    }
-    catch(err){
-        throw new Error(err.message)
-    }
 }
 
 const likeCard = async (cardById, userId) => {
-    try{
         // 1. find the card by id
         const card = await Card.findById(cardById);
+        if(!card) throw createError(404, "Card not found")
         
         // 2. check and change likes
         if(card.likes.includes(userId)){
@@ -68,10 +52,6 @@ const likeCard = async (cardById, userId) => {
 
         // 4. return
         return savedCard;
-    }
-    catch(err){
-        throw new Error(err.message)
-    }
 }
 
 

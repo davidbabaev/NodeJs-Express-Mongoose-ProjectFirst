@@ -14,7 +14,7 @@ const createNewUser = async (user) => {
 
         // instead if returning the full newUser (with password)
         // we create a new object with only these 4 fields
-        return _.pick(newUser, ["firstName", "lasName", "email", "_id"])
+        return _.pick(newUser, ["firstName", "lastName", "email", "_id"])
     }
     catch(err){
         throw new Error(err.message)
@@ -44,7 +44,7 @@ const loginUser = async ({email, password}) => {
 const getUsers = async () => {
     try{
         const users = await User.find();
-        return users;
+        return users.map(user => _.pick(user, ["firstName", "lastName", "email", "phone", "profilePicture", "address" , "_id"]))
     }
     catch(err){
         throw new Error(err.message)
@@ -54,7 +54,7 @@ const getUsers = async () => {
 const getUser = async (userId) => {
     try{
         const user = await User.findById(userId);
-        return user;
+        return _.pick(user, ["firstName", "lastName", "email", "phone", "profilePicture", "address" , "_id"])
     }
     catch(err){
         throw new Error(err.message)
@@ -64,7 +64,7 @@ const getUser = async (userId) => {
 const updateUser = async (userId, content) => {
     try{
         const updatedUser = await User.findByIdAndUpdate(userId, content, {new: true});
-        return updatedUser;
+        return _.pick(updatedUser, ["firstName", "lastName", "email", "phone", "profilePicture", "address" , "_id"])
     }
     catch(err){
         throw new Error(err.message);
@@ -74,7 +74,7 @@ const updateUser = async (userId, content) => {
 const deleteUser = async (userId) => {
     try{
         const deleted = await User.findByIdAndDelete(userId); 
-        return deleted;
+        return _.pick(deleted, ["firstName", "lastName", "email", "_id"])
     }
     catch(err){
         throw new Error(err.message)

@@ -2,6 +2,7 @@
 
 const express = require('express');
 const router = express.Router();
+const {handleError} = require('../../utils/handleErrors')
 
 const {
     createNewUser, 
@@ -19,7 +20,7 @@ router.get('/users', async (req, res) => {
         res.send(users);
     }
     catch(err){
-        res.status(400).send(err.message);
+        handleError(res, err);
     }
 })
 
@@ -29,7 +30,7 @@ router.get('/users/:id', async (req, res) => {
         res.send(user);
     }
     catch(err){
-        res.status(400).send(err.message);
+        handleError(res, err);
     }
 })
 
@@ -39,7 +40,7 @@ router.post('/users', async (req, res) => {
         res.send(newUser);
     }
     catch(err){
-        res.status(400).send(err.message);
+        handleError(res, err);
     }
 })
 
@@ -49,7 +50,7 @@ router.post('/users/login', async (req,res) => {
         res.send(token);
     }
     catch(err){
-        res.status(400).send(err.message)
+        handleError(res, err);
     }
 })
 
@@ -59,7 +60,7 @@ router.put('/users/:id', async (req, res) => {
         res.send(updatedUser);
     }   
     catch(err){
-        res.status(400).send(err.message)
+        handleError(res, err);
     }
 })
 
@@ -69,7 +70,7 @@ router.delete('/users/:id', async (req, res) => {
         res.send(deletedUser);
     }
     catch(err){
-        res.status(400).send(err.message);
+       handleError(res, err);
     }
 })
 

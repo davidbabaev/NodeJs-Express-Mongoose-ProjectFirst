@@ -2,6 +2,7 @@
 
 const express = require('express');
 const router = express.Router();
+const {handleError} = require('../../utils/handleErrors')
 
 const {
     createNewCard, 
@@ -19,7 +20,7 @@ router.get('/cards', async (req, res) => {
         res.send(cards);
     }
     catch(err){
-        res.status(400).send(err.message);
+        handleError(res, err);
     }
 })
 
@@ -29,7 +30,7 @@ router.get('/cards/:id',async (req, res) => {
         res.send(card);
     }
     catch(err){
-        res.status(400).send(err.message);
+        handleError(res, err)
     }
 })
 
@@ -39,7 +40,7 @@ router.post('/cards', auth, async (req, res) => {
         res.send(newCard);
     }
     catch(err){
-        res.status(400).send(err.message);
+        handleError(res, err);
     }
 })
 
@@ -49,7 +50,7 @@ router.put('/cards/:id', auth, async (req, res) => {
         res.send(updatedCard);
     }
     catch(err){
-        res.status(400).send(err.message);
+        handleError(res, err);
     }
 })
 
@@ -59,7 +60,7 @@ router.delete('/cards/:id', auth, async (req, res) => {
         res.send(deletedCard);
     }
     catch(err){
-        res.status(400).send(err.message);
+        handleError(res, err);
     }
 })
 
@@ -69,7 +70,7 @@ router.patch('/cards/:id', auth, async (req, res) => {
         res.send(card)
     }
     catch(err){
-        res.status(400).send(err.message);
+        handleError(res, err);
     }
 })
 
