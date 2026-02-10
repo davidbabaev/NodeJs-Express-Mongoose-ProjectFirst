@@ -3,6 +3,10 @@ const _ = require('lodash');
 const {generateUserPassword, comparePassword} = require('../helpers/bcrypt');
 const {signNewToken} = require('../../auth/providers/jwt');
  
+const pickSafeUserFields = (user) => {
+    return _.pick(user, ["firstName", "lastName", "email", "phone", "profilePicture", "address" , "_id"]);
+}
+
 // MongoDB operation
 
 const createNewUser = async (user) => {
@@ -11,10 +15,7 @@ const createNewUser = async (user) => {
 
         let newUser = new User(user);
         newUser = await newUser.save();
-
-        // instead if returning the full newUser (with password)
-        // we create a new object with only these 4 fields
-        return _.pick(newUser, ["firstName", "lastName", "email", "_id"])
+        return pickSafeUserFields(newUser);
     }
     catch(err){
         throw new Error(err.message)
@@ -44,7 +45,8 @@ const loginUser = async ({email, password}) => {
 const getUsers = async () => {
     try{
         const users = await User.find();
-        return users.map(user => _.pick(user, ["firstName", "lastName", "email", "phone", "profilePicture", "address" , "_id"]))
+        return pickSafeUserFields(users)
+
     }
     catch(err){
         throw new Error(err.message)
@@ -54,7 +56,7 @@ const getUsers = async () => {
 const getUser = async (userId) => {
     try{
         const user = await User.findById(userId);
-        return _.pick(user, ["firstName", "lastName", "email", "phone", "profilePicture", "address" , "_id"])
+        return pickSafeUserFields(user)
     }
     catch(err){
         throw new Error(err.message)
@@ -64,7 +66,8 @@ const getUser = async (userId) => {
 const updateUser = async (userId, content) => {
     try{
         const updatedUser = await User.findByIdAndUpdate(userId, content, {new: true});
-        return _.pick(updatedUser, ["firstName", "lastName", "email", "phone", "profilePicture", "address" , "_id"])
+        return pickSafeUserFields(updateUser)
+
     }
     catch(err){
         throw new Error(err.message);
@@ -74,13 +77,11 @@ const updateUser = async (userId, content) => {
 const deleteUser = async (userId) => {
     try{
         const deleted = await User.findByIdAndDelete(userId); 
-        return _.pick(deleted, ["firstName", "lastName", "email", "_id"])
+        return pickSafeUserFields(updateUser)
     }
     catch(err){
         throw new Error(err.message)
     }
-}
-
-// 
+} 
 
 module.exports = {createNewUser, getUsers, getUser, updateUser, deleteUser, loginUser};
