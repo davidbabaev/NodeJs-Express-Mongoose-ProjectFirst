@@ -2,6 +2,7 @@ const User = require('../models/User');
 const _ = require('lodash');
 const {generateUserPassword, comparePassword} = require('../helpers/bcrypt');
 const {signNewToken} = require('../../auth/providers/jwt');
+const { createError } = require('../../utils/handleErrors');
  
 const pickSafeUserFields = (user) => {
     return _.pick(user, ["firstName", "lastName", "email", "phone", "profilePicture", "address" , "_id"]);
@@ -18,7 +19,7 @@ const createNewUser = async (user) => {
         return pickSafeUserFields(newUser);
     }
     catch(err){
-        throw new Error(err.message)
+        throw err;
     }
 }
 
@@ -38,50 +39,33 @@ const loginUser = async ({email, password}) => {
         return token;
     }
     catch(err){
-        throw new Error(err.message)
+        throw err;
     }
 }
 
 const getUsers = async () => {
-    try{
         const users = await User.find();
-        return pickSafeUserFields(users)
-
-    }
-    catch(err){
-        throw new Error(err.message)
-    }
+        // return pickSafeUserFields(users)
+        return users.map(user => pickSafeUserFields(user))
 }
 
 const getUser = async (userId) => {
-    try{
         const user = await User.findById(userId);
+        if(!user) throw createError(404, "User not found")
         return pickSafeUserFields(user)
-    }
-    catch(err){
-        throw new Error(err.message)
-    }
+    
 }
 
 const updateUser = async (userId, content) => {
-    try{
         const updatedUser = await User.findByIdAndUpdate(userId, content, {new: true});
-        return pickSafeUserFields(updateUser)
-
-    }
-    catch(err){
-        throw new Error(err.message);
-    }
+        if(!updatedUser) throw createError(404, "Update not not possible")
+        return pickSafeUserFields(updatedUser)
 }
 
 const deleteUser = async (userId) => {
-    try{
         const deleted = await User.findByIdAndDelete(userId); 
-        return pickSafeUserFields(updateUser)
-    }
-    catch(err){
-        throw new Error(err.message)
-    }
+        if(!deleted) throw createError(404, "Delete user not possible")
+        return pickSafeUserFields(deleted)
 } 
 
 module.exports = {createNewUser, getUsers, getUser, updateUser, deleteUser, loginUser};

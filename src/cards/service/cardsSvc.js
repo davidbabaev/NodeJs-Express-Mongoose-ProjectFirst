@@ -1,8 +1,10 @@
 const { createError } = require('../../utils/handleErrors');
+const normalizeCard = require('../helpers/normalizeCard');
 const Card = require('../models/Card')
 
 const createNewCard = async (card) => {
     try{
+        card = normalizeCard(card) // fill defaults
         let newCard = new Card(card)
         newCard = await newCard.save();
         return newCard;
