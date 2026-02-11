@@ -3,6 +3,7 @@
 const express = require('express');
 const router = express.Router();
 const {handleError} = require('../../utils/handleErrors')
+const joiSchema = require('../validation/Joi/validateCardsWithJoi');
 
 const {
     createNewCard, 
@@ -13,6 +14,7 @@ const {
     likeCard,
 } = require('../service/cardsSvc');
 const auth = require('../../auth/authService');
+const normalizeCard = require('../helpers/normalizeCard');
 
 router.get('/cards', async (req, res) => {
     try{
@@ -36,7 +38,17 @@ router.get('/cards/:id',async (req, res) => {
 
 router.post('/cards', auth, async (req, res) => {
     try{
-        let newCard = await createNewCard(req.body);
+        // step 1: Joi validtion (B)
+        const { error } = joiSchema.validate(req.body);
+        if(error){
+            return res.status(400).send(error.details[0].message);
+        }
+
+        // step 2: Normalize(C)
+        const normalizedCard = normalizeCard(req.body);
+
+        // step 3: Service creates and saves (A)
+        let newCard = await createNewCard(normalizedCard);
         res.send(newCard);
     }
     catch(err){
