@@ -3,6 +3,7 @@ const _ = require('lodash');
 const {generateUserPassword, comparePassword} = require('../helpers/bcrypt');
 const {signNewToken} = require('../../auth/providers/jwt');
 const { createError } = require('../../utils/handleErrors');
+const validateUser = require('../validation/joi/validateUserWithJoi');
  
 const pickSafeUserFields = (user) => {
     return _.pick(user, ["firstName", "lastName", "email", "phone", "profilePicture", "address" , "_id"]);
@@ -23,7 +24,6 @@ const createNewUser = async (user) => {
     }
 }
 
-// don't have loginUser function at all:
 const loginUser = async ({email, password}) => {
     try{
         // find the user by email in mongoDB

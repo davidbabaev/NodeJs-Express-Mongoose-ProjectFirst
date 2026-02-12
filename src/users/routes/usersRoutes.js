@@ -11,7 +11,8 @@ const {
     updateUser, 
     deleteUser,
     loginUser,
-} = require('../service/usersSvc')
+} = require('../service/usersSvc');
+const normalizeUser = require('../helpers/normalizeUser');
 
 
 router.get('/users', async (req, res) => {
@@ -36,7 +37,10 @@ router.get('/users/:id', async (req, res) => {
 
 router.post('/users', async (req, res) => {
     try{
-        const newUser = await createNewUser(req.body);
+        const {error} = validateUser(req.body)
+        if(error) return res.status(400).send(error.details[0].message);
+        const normalizedUser = normalizeUser(req.body)
+        const newUser = await createNewUser(normalizedUser);
         res.send(newUser);
     }
     catch(err){
