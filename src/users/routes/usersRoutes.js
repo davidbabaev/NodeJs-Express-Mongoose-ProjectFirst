@@ -13,6 +13,7 @@ const {
     loginUser,
 } = require('../service/usersSvc');
 const normalizeUser = require('../helpers/normalizeUser');
+const validateUser = require('../validation/joi/validateUserWithJoi');
 
 
 router.get('/users', async (req, res) => {
@@ -47,6 +48,8 @@ router.post('/users', async (req, res) => {
         handleError(res, err);
     }
 })
+
+
 
 router.post('/users/login', async (req,res) => {
     try{
