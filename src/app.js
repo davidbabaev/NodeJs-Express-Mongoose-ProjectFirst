@@ -1,5 +1,5 @@
 require('dotenv').config();
-
+const morgan = require('morgan');
 const express = require('express');
 const corsPolicyMiddleware = require('../src/middlewares/cors')
 const app = express();
@@ -11,15 +11,11 @@ const router = require('./router/router');
 const connectToDB = require('./dbService');
 const chalk = require('chalk');
 
-app.use((req, res, next) => {
-    console.log('new request has been recieved');
-    console.log(`Request URL: ${req.url} | Method: ${req.method} | Time: ${new Date()}`);
-    next();
-})
+app.use(morgan("dev"));
 
 app.use(router); // connect router to app
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 8181;
 
 // this line handle errors global on our all files. prevent server collapse
 app.use((err, req, res, next ) => {
