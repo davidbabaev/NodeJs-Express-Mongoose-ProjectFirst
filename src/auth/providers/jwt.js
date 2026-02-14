@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 
-const SECRET_TOKEN = 'davidsecret';
+const SECRET_TOKEN = process.env.JWT_SECRET;
+
 
 const signNewToken = (user) => {
     try{

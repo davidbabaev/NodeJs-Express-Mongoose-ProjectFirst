@@ -17,12 +17,8 @@ app.use((req, res, next) => {
     next();
 })
 
-console.log(process.env);
-
-
 app.use(router); // connect router to app
 
-// const PORT = 8181; <- replaced:
 const PORT = process.env.PORT;
 
 // this line handle errors global on our all files. prevent server collapse
