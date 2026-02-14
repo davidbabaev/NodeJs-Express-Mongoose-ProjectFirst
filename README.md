@@ -26,4 +26,4 @@
 | 11.2.2026 | optinal chaining operator, Joi | [Notes](https://docs.google.com/document/d/1Kog80-FyQldt77YapxCxImaStA8u5poxKTMqNprOsIM/edit?usp=sharing) |
 | 12.2.2026 | Users Joi Validate & Normalize | [Notes](https://docs.google.com/document/d/1Gyr7hwGR532LTANhkvl0Qv7s7bUUlUG932vhTo1LrS4/edit?usp=sharing) |
 | 13.2.2026 | Environment Configuration | [Notes](https://docs.google.com/document/d/13d-0k0ToC-8CLCC2eZQI5ZdUrtoJM6KMZ5k8WkY4Jp4/edit?usp=sharing) |
-| 14.2.2026 | Environment Configuration | [Notes]() |
+| 14.2.2026 | Morgan Logger, .env.config | [Notes](https://docs.google.com/document/d/1c2xjYhG2dOrkSEg9FWjniP7uBdVVqvUJwsxMIEWGYOs/edit?usp=sharing) |
