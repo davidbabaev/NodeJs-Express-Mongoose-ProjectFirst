@@ -6,12 +6,12 @@ const app = express();
 
 app.use(corsPolicyMiddleware)
 app.use(express.json());
+app.use(morgan("dev"));
 
 const router = require('./router/router');
 const connectToDB = require('./dbService');
 const chalk = require('chalk');
 
-app.use(morgan("dev"));
 
 app.use(router); // connect router to app
 
