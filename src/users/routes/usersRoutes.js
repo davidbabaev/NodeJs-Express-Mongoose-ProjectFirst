@@ -13,6 +13,7 @@ const {
     loginUser,
 } = require('../service/usersSvc');
 const validateUser = require('../validation/joi/validateUserWithJoi');
+const auth = require('../../auth/authService');
 
 
 router.get('/users', async (req, res) => {
@@ -59,20 +60,30 @@ router.post('/users/login', async (req,res) => {
     }
 })
 
-router.put('/users/:id', async (req, res) => {
+router.put('/users/:id', auth ,async (req, res) => {
     try{
-        let updatedUser = await updateUser(req.params.id, req.body)
-        res.send(updatedUser);
+        if(req.user.userId === req.params.id || req.user.isAdmin){
+            let updatedUser = await updateUser(req.params.id, req.body)
+            res.send(updatedUser);
+        }
+        else{
+            res.status(403).send('You not allowed to edit this')
+        }
     }   
     catch(err){
         handleError(res, err);
     }
 })
 
-router.delete('/users/:id', async (req, res) => {
+router.delete('/users/:id', auth , async (req, res) => {
     try{
-        const deletedUser = await deleteUser(req.params.id);
-        res.send(deletedUser);
+        if(req.user.userId === req.params.id || req.user.isAdmin){
+            const deletedUser = await deleteUser(req.params.id);
+            res.send(deletedUser);
+        }
+        else{
+            res.status(403).send('You not allowed to do that')
+        }
     }
     catch(err){
        handleError(res, err);

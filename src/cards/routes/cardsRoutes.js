@@ -52,8 +52,14 @@ router.post('/cards', auth, async (req, res) => {
 
 router.put('/cards/:id', auth, async (req, res) => {
     try{
-        let updatedCard = await updateCard(req.params.id, req.body);
-        res.send(updatedCard);
+        const card = await getCard(req.params.id)
+        if(req.user.userId === card.userId.toString() || req.user.isAdmin){
+            let updatedCard = await updateCard(req.params.id, req.body);
+            res.send(updatedCard);
+        }
+        else{
+            res.status(403).send('You not allowed to edit this card')
+        }
     }
     catch(err){
         handleError(res, err);
@@ -62,8 +68,14 @@ router.put('/cards/:id', auth, async (req, res) => {
 
 router.delete('/cards/:id', auth, async (req, res) => {
     try{
-        let deletedCard = await deleteCard(req.params.id);
-        res.send(deletedCard);
+        const card = await getCard(req.params.id)
+        if(req.user.userId === card.userId.toString() || req.user.isAdmin){
+            let deletedCard = await deleteCard(req.params.id);
+            res.send(deletedCard);
+        }
+        else{
+            res.status(403).send('Your not allowed to delete this card')
+        }
     }
     catch(err){
         handleError(res, err);
