@@ -10,6 +10,6 @@ const joiSchema = Joi.object({
         alt: Joi.string().min(3).max(1024),
     }),
     location: Joi.string().min(3).max(1024),
-}).unknown(false)
+}).unknown(false).required()
 
 module.exports = joiSchema;

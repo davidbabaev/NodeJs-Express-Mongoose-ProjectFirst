@@ -14,7 +14,6 @@ const {
     likeCard,
 } = require('../service/cardsSvc');
 const auth = require('../../auth/authService');
-const normalizeCard = require('../helpers/normalizeCard');
 
 router.get('/cards', async (req, res) => {
     try{
@@ -38,17 +37,12 @@ router.get('/cards/:id',async (req, res) => {
 
 router.post('/cards', auth, async (req, res) => {
     try{
-        // step 1: Joi validtion (B)
         const { error } = joiSchema.validate(req.body);
         if(error){
             return res.status(400).send(error.details[0].message);
         }
 
-        // step 2: Normalize(C)
-        const normalizedCard = normalizeCard(req.body);
-
-        // step 3: Service creates and saves (A)
-        let newCard = await createNewCard(normalizedCard);
+        let newCard = await createNewCard(req.body);
         res.send(newCard);
     }
     catch(err){

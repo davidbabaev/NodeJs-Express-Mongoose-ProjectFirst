@@ -4,6 +4,7 @@ const {generateUserPassword, comparePassword} = require('../helpers/bcrypt');
 const {signNewToken} = require('../../auth/providers/jwt');
 const { createError } = require('../../utils/handleErrors');
 const validateUser = require('../validation/joi/validateUserWithJoi');
+const normalizeUser = require('../helpers/normalizeUser');
  
 const pickSafeUserFields = (user) => {
     return _.pick(user, ["firstName", "lastName", "email", "phone", "profilePicture", "address" , "_id"]);
@@ -14,8 +15,8 @@ const pickSafeUserFields = (user) => {
 const createNewUser = async (user) => {
     try{
         user.password = await generateUserPassword(user.password)
-
-        let newUser = new User(user);
+        const normalizedUser = normalizeUser(user)
+        let newUser = new User(normalizedUser);
         newUser = await newUser.save();
         return pickSafeUserFields(newUser);
     }

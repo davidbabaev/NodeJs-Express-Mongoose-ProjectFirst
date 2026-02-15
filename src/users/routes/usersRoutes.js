@@ -12,7 +12,6 @@ const {
     deleteUser,
     loginUser,
 } = require('../service/usersSvc');
-const normalizeUser = require('../helpers/normalizeUser');
 const validateUser = require('../validation/joi/validateUserWithJoi');
 
 
@@ -40,8 +39,7 @@ router.post('/users', async (req, res) => {
     try{
         const {error} = validateUser(req.body)
         if(error) return res.status(400).send(error.details[0].message);
-        const normalizedUser = normalizeUser(req.body)
-        const newUser = await createNewUser(normalizedUser);
+        const newUser = await createNewUser(req.body);
         res.send(newUser);
     }
     catch(err){

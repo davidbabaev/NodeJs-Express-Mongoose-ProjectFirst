@@ -1,13 +1,13 @@
 require('dotenv').config();
 const morgan = require('morgan');
 const express = require('express');
-const corsPolicyMiddleware = require('../src/middlewares/cors')
+const corsPolicyMiddleware = require('./middlewares/cors')
 const app = express();
 
 app.use(corsPolicyMiddleware)
 app.use(express.json());
-app.use(morgan("dev"));
 
+app.use(morgan("dev"));
 const router = require('./router/router');
 const connectToDB = require('./dbService');
 const chalk = require('chalk');
