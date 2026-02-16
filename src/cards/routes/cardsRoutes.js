@@ -42,7 +42,7 @@ router.post('/cards', auth, async (req, res) => {
             return res.status(400).send(error.details[0].message);
         }
 
-        let newCard = await createNewCard(req.body);
+        let newCard = await createNewCard(req.body, req.user.userId);
         res.send(newCard);
     }
     catch(err){
@@ -84,8 +84,8 @@ router.delete('/cards/:id', auth, async (req, res) => {
 
 router.patch('/cards/:id', auth, async (req, res) => {
     try{
-        let card = await likeCard(req.params.id, req.body.userId)
-        res.send(card)
+        let cardLike = await likeCard(req.params.id, req.user.userId)
+        res.send(cardLike)
     }
     catch(err){
         handleError(res, err);

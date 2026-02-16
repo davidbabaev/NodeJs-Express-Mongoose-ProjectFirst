@@ -1,13 +1,28 @@
 const { createError } = require('../../utils/handleErrors');
 const normalizeCard = require('../helpers/normalizeCard');
 const Card = require('../models/Card')
+const _ = require('lodash');
 
-const createNewCard = async (card) => {
+const pickSafeCardFields = (card) => {
+    return _.pick(card.toObject() ,[
+        "title",
+        "content",
+        "web",
+        "image",
+        "location",
+        "category",
+        "likes",
+        "createdAt",
+    ])
+}
+
+const createNewCard = async (card, userId) => {
     try{
         card = normalizeCard(card) // fill defaults
-        let newCard = new Card(card)
+        let newCard = new Card({...card, userId})
         newCard = await newCard.save();
-        return newCard;
+        // return newCard;
+        return pickSafeCardFields(newCard)
     }
     catch(err){
         throw err;
@@ -16,25 +31,26 @@ const createNewCard = async (card) => {
 
 const getCards = async () => {
         const cards = await Card.find()
-        return cards;
+        return cards.map(card => pickSafeCardFields(card))
 }
 
 const getCard = async (cardId) => {
         const card = await Card.findById(cardId)
         if(!card) throw createError(404, "Card not found")
-        return card;
+        return pickSafeCardFields(card)
 }
 
 const updateCard = async (cardId, upCard) => {
         let updatedCard = await Card.findByIdAndUpdate(cardId, upCard, {new: true});
         if(!updatedCard) throw createError(404, "Cannot update card ");
-        return updatedCard;
+        return pickSafeCardFields(updatedCard)
+
 }
 
 const deleteCard = async (cardId) => {
         const deletedCard = await Card.findByIdAndDelete(cardId);
         if(!deletedCard) throw createError(404, "Cannot delete card")
-        return deletedCard;
+        return pickSafeCardFields(deletedCard)
 }
 
 const likeCard = async (cardById, userId) => {
@@ -53,7 +69,7 @@ const likeCard = async (cardById, userId) => {
         const savedCard = await card.save();
 
         // 4. return
-        return savedCard;
+        return pickSafeCardFields(savedCard);
 }
 
 

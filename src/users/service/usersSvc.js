@@ -3,11 +3,10 @@ const _ = require('lodash');
 const {generateUserPassword, comparePassword} = require('../helpers/bcrypt');
 const {signNewToken} = require('../../auth/providers/jwt');
 const { createError } = require('../../utils/handleErrors');
-const validateUser = require('../validation/joi/validateUserWithJoi');
 const normalizeUser = require('../helpers/normalizeUser');
  
 const pickSafeUserFields = (user) => {
-    return _.pick(user, ["firstName", "lastName", "email", "phone", "profilePicture", "address" , "_id"]);
+    return _.pick(user.toObject() , ["firstName", "lastName", "email", "phone", "profilePicture", "address"]);
 }
 
 // MongoDB operation
