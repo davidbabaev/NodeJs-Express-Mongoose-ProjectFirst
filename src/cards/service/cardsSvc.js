@@ -37,20 +37,20 @@ const getCards = async () => {
 const getCard = async (cardId) => {
         const card = await Card.findById(cardId)
         if(!card) throw createError(404, "Card not found")
-        return pickSafeCardFields(card)
+        return card;
 }
 
 const updateCard = async (cardId, upCard) => {
         let updatedCard = await Card.findByIdAndUpdate(cardId, upCard, {new: true});
         if(!updatedCard) throw createError(404, "Cannot update card ");
-        return pickSafeCardFields(updatedCard)
+        return updatedCard;
 
 }
 
 const deleteCard = async (cardId) => {
         const deletedCard = await Card.findByIdAndDelete(cardId);
         if(!deletedCard) throw createError(404, "Cannot delete card")
-        return pickSafeCardFields(deletedCard)
+        return deletedCard;
 }
 
 const likeCard = async (cardById, userId) => {
@@ -79,5 +79,6 @@ module.exports = {
     getCard, 
     updateCard, 
     deleteCard, 
-    likeCard
+    likeCard,
+    pickSafeCardFields,
 }

@@ -68,4 +68,4 @@ const deleteUser = async (userId) => {
         return pickSafeUserFields(deleted)
 } 
 
-module.exports = {createNewUser, getUsers, getUser, updateUser, deleteUser, loginUser};
+module.exports = {createNewUser, getUsers, getUser, updateUser, deleteUser, loginUser, pickSafeUserFields};

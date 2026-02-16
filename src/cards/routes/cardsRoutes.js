@@ -12,6 +12,7 @@ const {
     updateCard, 
     deleteCard, 
     likeCard,
+    pickSafeCardFields,
 } = require('../service/cardsSvc');
 const auth = require('../../auth/authService');
 
@@ -28,7 +29,7 @@ router.get('/cards', async (req, res) => {
 router.get('/cards/:id',async (req, res) => {
     try{
         const card = await getCard(req.params.id); // -> dynamic!
-        res.send(card);
+        res.send(pickSafeCardFields(card));
     }
     catch(err){
         handleError(res, err)
@@ -55,7 +56,7 @@ router.put('/cards/:id', auth, async (req, res) => {
         const card = await getCard(req.params.id)
         if(req.user.userId === card.userId.toString() || req.user.isAdmin){
             let updatedCard = await updateCard(req.params.id, req.body);
-            res.send(updatedCard);
+            res.send(pickSafeCardFields(updatedCard));
         }
         else{
             res.status(403).send('You not allowed to edit this card')
@@ -71,7 +72,7 @@ router.delete('/cards/:id', auth, async (req, res) => {
         const card = await getCard(req.params.id)
         if(req.user.userId === card.userId.toString() || req.user.isAdmin){
             let deletedCard = await deleteCard(req.params.id);
-            res.send(deletedCard);
+            res.send(pickSafeCardFields(deletedCard));
         }
         else{
             res.status(403).send('Your not allowed to delete this card')
