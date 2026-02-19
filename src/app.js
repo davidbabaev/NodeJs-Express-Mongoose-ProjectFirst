@@ -7,6 +7,7 @@ const app = express();
 app.use(corsPolicyMiddleware)
 app.use(express.json());
 
+app.use(express.static(__dirname + '/public'))
 app.use(morgan("dev"));
 const router = require('./router/router');
 const connectToDB = require('./dbService');
@@ -26,4 +27,4 @@ app.use((err, req, res, next ) => {
 app.listen(PORT, () => {
     console.log(chalk.yellow('App is listening to port', PORT));
     connectToDB();
-})
+});
