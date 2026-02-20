@@ -6,7 +6,21 @@ const { createError } = require('../../utils/handleErrors');
 const normalizeUser = require('../helpers/normalizeUser');
  
 const pickSafeUserFields = (user) => {
-    return _.pick(user.toObject() , ["firstName", "lastName", "email", "phone", "profilePicture", "address"]);
+    return _.pick(user.toObject() , [
+        "firstName", 
+        "lastName", 
+        "email", 
+        "phone", 
+        "profilePicture", 
+        "coverImage",
+        "address",
+        "age",
+        "job",
+        "gender",
+        "birthDate",
+        "aboutMe",
+        "createdAt",
+    ]);
 }
 
 // MongoDB operation
@@ -52,14 +66,14 @@ const getUsers = async () => {
 const getUser = async (userId) => {
         const user = await User.findById(userId);
         if(!user) throw createError(404, "User not found")
-        return pickSafeUserFields(user)
-    
+        return pickSafeUserFields(user) 
 }
 
 const updateUser = async (userId, content) => {
-        const updatedUser = await User.findByIdAndUpdate(userId, content, {new: true});
-        if(!updatedUser) throw createError(404, "Update not not possible")
-        return pickSafeUserFields(updatedUser)
+    const normalizeContent = normalizeUser(content);
+    const updatedUser = await User.findByIdAndUpdate(userId, normalizeContent, {new: true});
+    if(!updatedUser) throw createError(404, "Update not not possible")
+    return pickSafeUserFields(updatedUser)
 }
 
 const deleteUser = async (userId) => {
