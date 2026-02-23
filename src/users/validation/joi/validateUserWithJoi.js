@@ -4,7 +4,7 @@ const imageUrlRegExp = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-
 
 const validateUser = (user) => {
     const validated = Joi.object({
-        firstName: Joi.string().min(2).max(20).required(),
+        name: Joi.string().min(2).max(20).required(),
         lastName: Joi.string().min(2).max(20).required(),
         email: Joi.string().regex(RegExp(/^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/)).required(),
         password: Joi.string().regex(RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/)).required(),

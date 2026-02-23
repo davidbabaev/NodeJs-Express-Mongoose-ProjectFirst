@@ -7,7 +7,7 @@ const normalizeUser = require('../helpers/normalizeUser');
  
 const pickSafeUserFields = (user) => {
     return _.pick(user.toObject() , [
-        "firstName", 
+        "name", 
         "lastName", 
         "email", 
         "phone", 
@@ -20,6 +20,7 @@ const pickSafeUserFields = (user) => {
         "birthDate",
         "aboutMe",
         "createdAt",
+        "_id"
     ]);
 }
 
@@ -50,7 +51,8 @@ const loginUser = async ({email, password}) => {
 
         // password correct --> generate JWT token
         const token = signNewToken(user);
-        return token;
+        const safeUser = pickSafeUserFields(user);
+        return{token, safeUser}
     }
     catch(err){
         throw err;

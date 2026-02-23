@@ -7,7 +7,7 @@ const CardSchema = new mongoose.Schema({
     web: URL,
     image: {
         url: URL,
-        alt: DEFAULT_VALIDATOR,
+        alt: String,
     },
     location: {
         type: String,
