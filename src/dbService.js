@@ -10,4 +10,14 @@ const connectToDB = async() => {
     }
 }
 
-module.exports = connectToDB; // <- () calls the function immidiatly, we don't need them here
+const disconnectDB = async() => {
+    try{
+        await mongoose.disconnect(process.env.DB_CONNECTION_STRING);
+        console.log('Disconnect from mongoDB');
+    }
+    catch(err){
+        console.log(err.message);
+    }
+}
+
+module.exports = {connectToDB, disconnectDB};

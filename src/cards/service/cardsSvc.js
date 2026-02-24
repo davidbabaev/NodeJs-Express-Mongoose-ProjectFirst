@@ -13,6 +13,8 @@ const pickSafeCardFields = (card) => {
         "category",
         "likes",
         "createdAt",
+        "_id",
+        "userId"
     ])
 }
 

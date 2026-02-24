@@ -32,7 +32,10 @@ const createNewUser = async (user) => {
         const normalizedUser = normalizeUser(user)
         let newUser = new User(normalizedUser);
         newUser = await newUser.save();
-        return pickSafeUserFields(newUser);
+
+        const token = signNewToken(newUser);
+        const safeUser = pickSafeUserFields(newUser);
+        return{token, safeUser}
     }
     catch(err){
         throw err;

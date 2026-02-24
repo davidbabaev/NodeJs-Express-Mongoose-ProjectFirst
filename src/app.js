@@ -10,7 +10,7 @@ app.use(express.json());
 app.use(express.static(__dirname + '/public'))
 app.use(morgan("dev"));
 const router = require('./router/router');
-const connectToDB = require('./dbService');
+const {connectToDB} = require('./dbService');
 const chalk = require('chalk');
 
 

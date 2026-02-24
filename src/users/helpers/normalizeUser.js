@@ -12,8 +12,8 @@ const normalizeUser = (user) => {
             country: user.address?.country || "Not Defined",
             city: user.address?.city || "Not Defined",
             street: user.address?.street || "Not Defined",
-            house: user.address?.house || 0,
-            zip: user.address?.zip || 0 ,
+            house: user.address?.house || 1,
+            zip: user.address?.zip || 1 ,
     }}
 } 
 
