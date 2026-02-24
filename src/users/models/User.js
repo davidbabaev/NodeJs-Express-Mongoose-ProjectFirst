@@ -38,7 +38,6 @@ const UserSchema = new mongoose.Schema({
     },
     aboutMe: {
         type: String,
-        minLength: 2,
         maxLength: 1024,
     },
     createdAt: {

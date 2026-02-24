@@ -5,16 +5,13 @@ const CardSchema = new mongoose.Schema({
     title: DEFAULT_VALIDATOR,
     content: DEFAULT_VALIDATOR,
     web: URL,
-    image: {
-        url: URL,
-        alt: String,
-    },
+    image: URL,
     location: {
         type: String,
         trim: true,
         maxLength: 256
     },
-    category: DEFAULT_VALIDATOR,
+    category: String,
     likes: [String],
     createdAt: {
         type: Date,
