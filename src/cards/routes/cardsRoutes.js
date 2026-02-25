@@ -13,6 +13,8 @@ const {
     deleteCard, 
     likeCard,
     pickSafeCardFields,
+    addComment,
+    removeComment,
 } = require('../service/cardsSvc');
 const auth = require('../../auth/authService');
 
@@ -85,10 +87,33 @@ router.delete('/cards/:id', auth, async (req, res) => {
     }
 })
 
+
 router.patch('/cards/:id', auth, async (req, res) => {
     try{
         let cardLike = await likeCard(req.params.id, req.user.userId)
         res.send(cardLike)
+    }
+    catch(err){
+        handleError(res, err);
+    }
+})
+
+// PATCH /cards/:id/comments ← add comment (which card)
+router.patch('/cards/:id/comments', auth, async (req, res) => {
+    try{
+        let addingComment = await addComment(req.params.id, req.user.userId, req.body.commentText)
+        res.send(addingComment)
+    }
+    catch(err){
+        handleError(res, err);
+    }
+})
+
+// PATCH /cards/:id/comments/:commentId  ← remove comment (which card + which comment)
+router.patch('/cards/:id/comments/:commentId', auth, async (req, res) => {
+    try{
+        let deleteComment = await removeComment(req.params.id, req.params.commentId)
+        res.send(deleteComment)
     }
     catch(err){
         handleError(res, err);

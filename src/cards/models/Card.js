@@ -1,5 +1,19 @@
 const mongoose = require('mongoose');
-const {URL, DEFAULT_VALIDATOR} = require('../helpers/validators')
+const {URL} = require('../helpers/validators')
+
+const Comments = new mongoose.Schema({
+    // commentId: '', <- mongoDb automatically created this
+    userId: mongoose.Schema.Types.ObjectId,
+    commentText: {
+        type: String,
+        maxLength: 1024
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
+    },
+
+})
 
 const CardSchema = new mongoose.Schema({
     title: String,
@@ -17,6 +31,7 @@ const CardSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
+    comments: [Comments],
     userId: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,

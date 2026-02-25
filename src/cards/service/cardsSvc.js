@@ -12,9 +12,10 @@ const pickSafeCardFields = (card) => {
         "location",
         "category",
         "likes",
+        "comments",
         "createdAt",
         "_id",
-        "userId"
+        "userId",
     ])
 }
 
@@ -74,6 +75,28 @@ const likeCard = async (cardById, userId) => {
         return pickSafeCardFields(savedCard);
 }
 
+const addComment = async (cardId, userId, commentText) => {
+    // find the card by ID
+    const card = await Card.findById(cardId);
+    if(!card) throw createError(404, "Card not found")
+
+    card.comments.push({userId, commentText})
+    // save after changes
+    const saveComment = await card.save();
+    // return picked
+    return pickSafeCardFields(saveComment)
+}
+
+const removeComment = async (cardId, commentId) => {
+    const card = await Card.findById(cardId);
+    if(!card) throw createError(404, "Card not found")
+
+    card.comments = card.comments.filter(comment => comment._id.toString() !== commentId)
+
+    const saveComment = await card.save();
+    return pickSafeCardFields(saveComment)
+}
+
 
 module.exports = {
     createNewCard, 
@@ -83,4 +106,6 @@ module.exports = {
     deleteCard, 
     likeCard,
     pickSafeCardFields,
+    addComment,
+    removeComment,
 }
