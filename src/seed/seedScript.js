@@ -71,39 +71,27 @@ const mockCards = [
         title: "Learning React",
         content: "React hooks changed the way I build frontend apps",
         category: "Technology",
-        image: { 
-            url: "https://images.pexels.com/photos/417074/pexels-photo-417074.jpeg?cs=srgb&dl=pexels-souvenirpixels-417074.jpg&fm=jpg", 
-            alt: "React code" 
-        },
+        image: "https://images.pexels.com/photos/417074/pexels-photo-417074.jpeg?cs=srgb&dl=pexels-souvenirpixels-417074.jpg&fm=jpg",
         location: "Tel Aviv",
     },
     {
         title: "Best Hummus in Town",
         content: "Found an amazing place near the market",
         category: "Food",
-        image: { 
-            url: "https://images.pexels.com/photos/417074/pexels-photo-417074.jpeg?cs=srgb&dl=pexels-souvenirpixels-417074.jpg&fm=jpg", 
-            alt: "Hummus plate" 
-        },
+        image: "https://images.pexels.com/photos/417074/pexels-photo-417074.jpeg?cs=srgb&dl=pexels-souvenirpixels-417074.jpg&fm=jpg",
         location: "Haifa",
     },
     {
         title: "Sunset Photography",
         content: "Caught this incredible sunset from the rooftop",
         category: "Photography",
-        image: { 
-            url: "https://images.pexels.com/photos/417074/pexels-photo-417074.jpeg?cs=srgb&dl=pexels-souvenirpixels-417074.jpg&fm=jpg", 
-            alt: "Sunset view"
-        },
+        image: "https://images.pexels.com/photos/417074/pexels-photo-417074.jpeg?cs=srgb&dl=pexels-souvenirpixels-417074.jpg&fm=jpg",
     },
     {
         title: "UI Design Tips",
         content: "Clean interfaces start with good spacing and typography",
         category: "Design",
-        image: { 
-            url: "https://images.pexels.com/photos/417074/pexels-photo-417074.jpeg?cs=srgb&dl=pexels-souvenirpixels-417074.jpg&fm=jpg", 
-            alt: "Design mockup"
-        },
+        image: "https://images.pexels.com/photos/417074/pexels-photo-417074.jpeg?cs=srgb&dl=pexels-souvenirpixels-417074.jpg&fm=jpg",
         web: "https://designtips.example.com",
         location: "New York",
     },

@@ -62,6 +62,8 @@ router.put('/users/:id', auth ,async (req, res) => {
     try{
         if(req.user.userId === req.params.id || req.user.isAdmin){
             let updatedUser = await updateUser(req.params.id, req.body)
+            console.log("Updated User: ", updatedUser);
+            
             res.send(updatedUser);
         }
         else{

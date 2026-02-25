@@ -5,7 +5,8 @@ const {
     DEFAULT_VALIDATOR, 
     PHONE, 
     NUMBER, 
-    PASSWORD
+    PASSWORD,
+    getMaxBirthDate
 } = require('../helpers/userValidators') 
 
 const UserSchema = new mongoose.Schema({

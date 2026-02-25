@@ -44,10 +44,12 @@ router.post('/cards', auth, async (req, res) => {
         }
 
         let newCard = await createNewCard(req.body, req.user.userId);
+        
         res.send(newCard);
     }
     catch(err){
         handleError(res, err);
+        console.log(err.message);
     }
 })
 

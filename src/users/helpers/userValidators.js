@@ -44,4 +44,10 @@ const NUMBER = {
   min: 0,
 };
 
-module.exports = { URL, EMAIL, DEFAULT_VALIDATOR, PHONE, NUMBER, PASSWORD};
+function getMaxBirthDate() {
+    const date = new Date()
+    date.setFullYear(date.getFullYear() - 5)
+    return date.toISOString().split("T")[0]
+}
+
+module.exports = { URL, EMAIL, DEFAULT_VALIDATOR, PHONE, NUMBER, PASSWORD, getMaxBirthDate};

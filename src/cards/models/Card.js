@@ -2,8 +2,8 @@ const mongoose = require('mongoose');
 const {URL, DEFAULT_VALIDATOR} = require('../helpers/validators')
 
 const CardSchema = new mongoose.Schema({
-    title: DEFAULT_VALIDATOR,
-    content: DEFAULT_VALIDATOR,
+    title: String,
+    content: String,
     web: URL,
     image: URL,
     location: {
