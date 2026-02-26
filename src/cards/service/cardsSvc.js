@@ -57,22 +57,22 @@ const deleteCard = async (cardId) => {
 }
 
 const likeCard = async (cardById, userId) => {
-        // 1. find the card by id
-        const card = await Card.findById(cardById);
-        if(!card) throw createError(404, "Card not found")
-        
-        // 2. check and change likes
-        if(card.likes.includes(userId)){
-            card.likes = card.likes.filter(id => id !== userId)
-        }
-        else{
-            card.likes.push(userId);
-        }
-        // 3. save after changes
-        const savedCard = await card.save();
+    // 1. find the card by id
+    const card = await Card.findById(cardById);
+    if(!card) throw createError(404, "Card not found")
+    
+    // 2. check and change likes
+    if(card.likes.includes(userId)){
+        card.likes = card.likes.filter(id => id !== userId)
+    }
+    else{
+        card.likes.push(userId);
+    }
+    // 3. save after changes
+    const savedCard = await card.save();
 
-        // 4. return
-        return pickSafeCardFields(savedCard);
+    // 4. return
+    return pickSafeCardFields(savedCard);
 }
 
 const addComment = async (cardId, userId, commentText) => {

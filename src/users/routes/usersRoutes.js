@@ -11,6 +11,7 @@ const {
     updateUser, 
     deleteUser,
     loginUser,
+    followUser,
 } = require('../service/usersSvc');
 const validateUser = require('../validation/joi/validateUserWithJoi');
 const auth = require('../../auth/authService');
@@ -72,6 +73,17 @@ router.put('/users/:id', auth ,async (req, res) => {
     }   
     catch(err){
         handleError(res, err);
+    }
+})
+
+router.patch('/users/:id/follow', auth, async (req, res) => {
+    try{
+        let followOnUser = await followUser(req.user.userId, req.params.id);
+        res.send(followOnUser);
+    }
+    catch(err){
+        handleError(err, res)
+        console.log(err.message);
     }
 })
 

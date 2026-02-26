@@ -20,7 +20,8 @@ const pickSafeUserFields = (user) => {
         "birthDate",
         "aboutMe",
         "createdAt",
-        "_id"
+        "_id",
+        "following",
     ]);
 }
 
@@ -81,10 +82,26 @@ const updateUser = async (userId, content) => {
     return pickSafeUserFields(updatedUser)
 }
 
+const followUser = async (userId, followingUserId) => {
+    const user = await User.findById(userId);
+    if(!user) throw createError(404, 'User didnt found')
+
+    // if user.following have and id if not put this id in this array
+    if(user.following.includes(followingUserId)){
+        user.following = user.following.filter(id => id !== followingUserId);
+    }
+    else{
+        user.following.push(followingUserId)
+    }
+
+    const saveFollow = await user.save()
+    return pickSafeUserFields(saveFollow);
+}   
+
 const deleteUser = async (userId) => {
         const deleted = await User.findByIdAndDelete(userId); 
         if(!deleted) throw createError(404, "Delete user not possible")
         return pickSafeUserFields(deleted)
 } 
 
-module.exports = {createNewUser, getUsers, getUser, updateUser, deleteUser, loginUser, pickSafeUserFields};
+module.exports = {createNewUser, getUsers, getUser, updateUser, deleteUser, loginUser, pickSafeUserFields, followUser};
