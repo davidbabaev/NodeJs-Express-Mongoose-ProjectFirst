@@ -83,6 +83,9 @@ const updateUser = async (userId, content) => {
 }
 
 const followUser = async (userId, followingUserId) => {
+    // cannot follow yourself
+    if(userId === followingUserId) throw createError(400, "Cannot Follow Yourself")
+
     const user = await User.findById(userId);
     if(!user) throw createError(404, 'User didnt found')
 
