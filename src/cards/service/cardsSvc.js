@@ -1,3 +1,4 @@
+const User = require('../../users/models/User');
 const { createError } = require('../../utils/handleErrors');
 const normalizeCard = require('../helpers/normalizeCard');
 const Card = require('../models/Card')
@@ -97,6 +98,16 @@ const removeComment = async (cardId, commentId) => {
     return pickSafeCardFields(saveComment)
 }
 
+const getFeedCards = async (userId) => {
+    const user = await User.findById(userId)
+    if(!user) throw createError(404, "User not found")
+
+    // find cards where userId is in this array
+    const feedCards = await Card.find({userId: {$in: user.following}}).sort({createdAt: -1})
+
+    return feedCards.map(card => pickSafeCardFields(card))   
+}
+
 
 module.exports = {
     createNewCard, 
@@ -108,4 +119,5 @@ module.exports = {
     pickSafeCardFields,
     addComment,
     removeComment,
+    getFeedCards,
 }

@@ -15,6 +15,7 @@ const {
     pickSafeCardFields,
     addComment,
     removeComment,
+    getFeedCards,
 } = require('../service/cardsSvc');
 const auth = require('../../auth/authService');
 
@@ -28,13 +29,27 @@ router.get('/cards', async (req, res) => {
     }
 })
 
+router.get('/cards/feed', auth, async (req,res) => {
+    try{
+        const feedCards = await getFeedCards(req.user.userId)
+        res.send(feedCards) // <- send them back
+    }
+    catch(err){
+        handleError(res, err)
+        console.log(err.message);
+        
+    }
+})
+
 router.get('/cards/:id',async (req, res) => {
     try{
         const card = await getCard(req.params.id); // -> dynamic!
         res.send(pickSafeCardFields(card));
     }
     catch(err){
-        handleError(res, err)
+        handleError(res, err);
+        console.log(err.message);
+        
     }
 })
 
