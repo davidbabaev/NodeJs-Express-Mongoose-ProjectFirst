@@ -27,3 +27,7 @@
 | 12.2.2026 | Users Joi Validate & Normalize | [Notes](https://docs.google.com/document/d/1Gyr7hwGR532LTANhkvl0Qv7s7bUUlUG932vhTo1LrS4/edit?usp=sharing) |
 | 13.2.2026 | Environment Configuration | [Notes](https://docs.google.com/document/d/13d-0k0ToC-8CLCC2eZQI5ZdUrtoJM6KMZ5k8WkY4Jp4/edit?usp=sharing) |
 | 14.2.2026 | Morgan Logger, .env.config | [Notes](https://docs.google.com/document/d/1c2xjYhG2dOrkSEg9FWjniP7uBdVVqvUJwsxMIEWGYOs/edit?usp=sharing) |
+| 25.2.2026 | Card Comments Integrating with backend | [Notes](https://docs.google.com/document/d/1lizLrIPoRnOmrSRMgq22DNfozUD-KXkoTwkx5AN-AtM/edit?usp=sharing) |
+| 26.2.2026 | follow/ unfollow | [Notes](https://docs.google.com/document/d/1aZkROWeXobu2vJ5ZVE18WPHxEPcruUkwX9BPV_z0sak/edit?usp=sharing) |
+| 27.2.2026 | user feed | [Notes](https://docs.google.com/document/d/1yoc63NzHjEbPn0_jJ2trZRbMcindhMIghCxp6hTZJ-E/edit?usp=sharing) |
+| 2.3.2026 | Recall: apiService, auth migration, comment syatem etc.  | [Notes](https://docs.google.com/document/d/1G5wAEW0jXRI54WFIGZrFEndAk0Q4d18_loY6CccNOGk/edit?usp=sharing) |

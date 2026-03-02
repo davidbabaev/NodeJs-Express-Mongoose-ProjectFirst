@@ -4,6 +4,7 @@ const {generateUserPassword, comparePassword} = require('../helpers/bcrypt');
 const {signNewToken} = require('../../auth/providers/jwt');
 const { createError } = require('../../utils/handleErrors');
 const normalizeUser = require('../helpers/normalizeUser');
+const Card = require('../../cards/models/Card');
  
 const pickSafeUserFields = (user) => {
     return _.pick(user.toObject() , [
@@ -106,5 +107,30 @@ const deleteUser = async (userId) => {
         if(!deleted) throw createError(404, "Delete user not possible")
         return pickSafeUserFields(deleted)
 } 
+
+
+
+
+
+
+
+const cardsFeed = async (userId) => {
+    const user = await User.findById(userId);
+    if(!user) throw createError(404, "user not found");
+
+    const followingList = user.following;
+
+    const feedCards = await Card.find({ userId: {$in: followingList}})
+    .limit(30)
+    .sort({title: -1})
+
+}
+
+
+
+
+
+
+
 
 module.exports = {createNewUser, getUsers, getUser, updateUser, deleteUser, loginUser, pickSafeUserFields, followUser};

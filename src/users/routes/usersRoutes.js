@@ -102,4 +102,24 @@ router.delete('/users/:id', auth , async (req, res) => {
     }
 })
 
+
+
+
+
+
+router.get('/cards/feed', auth, async (req, res) => {
+    try{
+        const user = await getUser(req.user.userId);
+    }
+    catch(err){
+        handleError(err, res)
+    }
+})
+
+
+
+
+
+
+
 module.exports = router;

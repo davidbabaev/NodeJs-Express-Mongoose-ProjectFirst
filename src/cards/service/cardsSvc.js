@@ -108,7 +108,6 @@ const getFeedCards = async (userId) => {
     return feedCards.map(card => pickSafeCardFields(card))   
 }
 
-
 module.exports = {
     createNewCard, 
     getCards, 
