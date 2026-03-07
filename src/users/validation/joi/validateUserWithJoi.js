@@ -11,17 +11,17 @@ const validateUser = (user) => {
         phone: Joi.string().regex(RegExp(/0[0-9]{1,2}\-?\s?[0-9]{3}\s?[0-9]{4}/)).required(),
         profilePicture: Joi.string().uri().regex(RegExp(imageUrlRegExp)),
         coverImage: Joi.string().uri().regex(RegExp(imageUrlRegExp)),
-        age: Joi.number().integer().min(5).max(120).required(),
-        job: Joi.string().min(2).max(50),
-        gender: Joi.string().min(2).max(10),
+        age: Joi.number().integer().max(120).required(),
+        job: Joi.string().max(50),
+        gender: Joi.string().max(10),
         birthDate: Joi.date().required(),
-        aboutMe: Joi.string().min(2).max(1024),
+        aboutMe: Joi.string().max(1024).allow(''),
         address: Joi.object({
             country: Joi.string(),
-            city: Joi.string().min(2).max(20),
-            street: Joi.string().min(2).max(20),
-            house: Joi.number().integer().min(1).max(10000),
-            zip: Joi.number().integer().min(1).max(100000),
+            city: Joi.string().max(20),
+            street: Joi.string().max(20),
+            house: Joi.number().integer().max(10000),
+            zip: Joi.number().integer().max(100000),
         }).required()
     }).unknown(false).required();
 

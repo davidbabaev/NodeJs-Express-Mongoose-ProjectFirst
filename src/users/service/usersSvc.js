@@ -5,6 +5,7 @@ const {signNewToken} = require('../../auth/providers/jwt');
 const { createError } = require('../../utils/handleErrors');
 const normalizeUser = require('../helpers/normalizeUser');
 const Card = require('../../cards/models/Card');
+const { pickSafeCardFields } = require('../../cards/service/cardsSvc');
  
 const pickSafeUserFields = (user) => {
     return _.pick(user.toObject() , [
@@ -23,6 +24,7 @@ const pickSafeUserFields = (user) => {
         "createdAt",
         "_id",
         "following",
+        "isAdmin",
     ]);
 }
 
@@ -40,7 +42,7 @@ const createNewUser = async (user) => {
         return{token, safeUser}
     }
     catch(err){
-        throw err;
+        throw err;        
     }
 }
 
@@ -108,12 +110,6 @@ const deleteUser = async (userId) => {
         return pickSafeUserFields(deleted)
 } 
 
-
-
-
-
-
-
 const cardsFeed = async (userId) => {
     const user = await User.findById(userId);
     if(!user) throw createError(404, "user not found");
@@ -122,15 +118,9 @@ const cardsFeed = async (userId) => {
 
     const feedCards = await Card.find({ userId: {$in: followingList}})
     .limit(30)
-    .sort({title: -1})
+    .sort({createdAt: -1})
 
+    return feedCards.map(card => pickSafeCardFields(card))
 }
 
-
-
-
-
-
-
-
-module.exports = {createNewUser, getUsers, getUser, updateUser, deleteUser, loginUser, pickSafeUserFields, followUser};
+module.exports = {createNewUser, getUsers, getUser, updateUser, deleteUser, loginUser, pickSafeUserFields, followUser, cardsFeed};

@@ -12,6 +12,7 @@ const {
     deleteUser,
     loginUser,
     followUser,
+    cardsFeed,
 } = require('../service/usersSvc');
 const validateUser = require('../validation/joi/validateUserWithJoi');
 const auth = require('../../auth/authService');
@@ -46,6 +47,8 @@ router.post('/users', async (req, res) => {
     }
     catch(err){
         handleError(res, err);
+        console.log(err.message);
+        
     }
 })
 
@@ -99,27 +102,20 @@ router.delete('/users/:id', auth , async (req, res) => {
     }
     catch(err){
        handleError(res, err);
+       console.log(err.message);
+       
     }
 })
 
-
-
-
-
-
 router.get('/cards/feed', auth, async (req, res) => {
     try{
-        const user = await getUser(req.user.userId);
+        // logged-in user
+        const feedCardsFollowing = await cardsFeed(req.user.userId);
+        res.send(feedCardsFollowing)
     }
     catch(err){
         handleError(err, res)
     }
 })
-
-
-
-
-
-
 
 module.exports = router;
