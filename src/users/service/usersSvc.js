@@ -48,9 +48,11 @@ const createNewUser = async (user) => {
 
 const loginUser = async ({email, password}) => {
     try{
+
         // find the user by email in mongoDB
         const user = await User.findOne({email});
         if(!user) throw new Error("Invalid email or password");
+        if(user.isBanned) throw new Error("You Banned :("); 
 
         // compare plain password with hashed password form DB
         const isMatch = await comparePassword(password, user.password);
@@ -123,4 +125,26 @@ const cardsFeed = async (userId) => {
     return feedCards.map(card => pickSafeCardFields(card))
 }
 
-module.exports = {createNewUser, getUsers, getUser, updateUser, deleteUser, loginUser, pickSafeUserFields, followUser, cardsFeed};
+const banUser = async(bannedUserId) => {
+
+    let bannedUser = await User.findById(bannedUserId)
+    if(!bannedUser) throw createError(404, "user not found");
+
+    bannedUser.isBanned = !bannedUser.isBanned
+
+    const updatedBannedUser = await bannedUser.save();
+    return pickSafeUserFields(updatedBannedUser)
+}
+
+const promoteUserToAdmin = async (promotedUserId) => {
+    let promotedUser = await User.findById(promotedUserId)
+    if(!promotedUser) throw createError(404, "user not found")
+
+    promotedUser.isAdmin = !promotedUser.isAdmin;
+
+    const updatedPromotedUser = await promotedUser.save()
+    return pickSafeUserFields(updatedPromotedUser)
+}
+
+
+module.exports = {createNewUser, getUsers, getUser, updateUser, deleteUser, loginUser, pickSafeUserFields, followUser, cardsFeed, banUser, promoteUserToAdmin};

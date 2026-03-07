@@ -2,7 +2,7 @@
 
 const express = require('express');
 const router = express.Router();
-const {handleError} = require('../../utils/handleErrors')
+const {handleError, createError} = require('../../utils/handleErrors')
 
 const {
     createNewUser, 
@@ -13,6 +13,8 @@ const {
     loginUser,
     followUser,
     cardsFeed,
+    banUser, 
+    promoteUserToAdmin
 } = require('../service/usersSvc');
 const validateUser = require('../validation/joi/validateUserWithJoi');
 const auth = require('../../auth/authService');
@@ -103,7 +105,6 @@ router.delete('/users/:id', auth , async (req, res) => {
     catch(err){
        handleError(res, err);
        console.log(err.message);
-       
     }
 })
 
@@ -112,6 +113,33 @@ router.get('/cards/feed', auth, async (req, res) => {
         // logged-in user
         const feedCardsFollowing = await cardsFeed(req.user.userId);
         res.send(feedCardsFollowing)
+    }
+    catch(err){
+        handleError(err, res)
+    }
+})
+
+
+router.patch('/users/:id/ban', auth, async (req,res) => {
+    try{
+        if(!req.user.isAdmin) throw createError(403, 'Admin only')
+        if(req.user.userId === req.params.id) throw createError(400, 'cannot ban yourself')
+
+        const banned = await banUser(req.params.id) 
+        res.send(banned)
+    }
+    catch(err){
+        handleError(err, res)
+    }
+})
+
+router.patch('/users/:id/promote', auth, async(req,res) => {
+    try{
+        if(!req.user.isAdmin) throw createError(403, 'Admin only');
+        if(req.user.userId === req.params.id) throw createError(400, 'cannot promote yourself');
+
+        const promoted = await promoteUserToAdmin(req.params.id);
+        res.send(promoted)
     }
     catch(err){
         handleError(err, res)
