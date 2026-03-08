@@ -94,12 +94,14 @@ router.patch('/users/:id/follow', auth, async (req, res) => {
 
 router.delete('/users/:id', auth , async (req, res) => {
     try{
+        if(req.user.isAdmin && req.user.userId.toString() === req.params.id.toString()) throw createError(403, 'Admin cannot delete himself, always need to be admin to the app')
+
         if(req.user.userId === req.params.id || req.user.isAdmin){
             const deletedUser = await deleteUser(req.params.id);
             res.send(deletedUser);
         }
         else{
-            res.status(403).send('You not allowed to do that')
+            res.status(403).send('You not allowed to delete users beside yourself')
         }
     }
     catch(err){
@@ -121,10 +123,7 @@ router.get('/cards/feed', auth, async (req, res) => {
 
 router.patch('/users/:id/ban', auth, async (req,res) => {
     try{
-        if(!req.user.isAdmin) throw createError(403, 'Admin only')
-        console.log('userId from token:', req.user.userId)
-        console.log('id from params:', req.params.id)
-        console.log('types:', typeof req.user.userId, typeof req.params.id)
+        if(!req.user.isAdmin) throw createError(403, 'Only admin Can ban users!')
         if(req.user.userId.toString() === req.params.id.toString()) throw createError(400, 'cannot ban yourself')
 
         const banned = await banUser(req.params.id) 

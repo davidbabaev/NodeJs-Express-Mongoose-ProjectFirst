@@ -110,7 +110,25 @@ const deleteUser = async (deletedUserId) => {
     const deleted = await User.findByIdAndDelete(deletedUserId);
     if(!deleted) throw createError(404, "Delete user not possible")
 
-    await Card.deleteMany({userId: deletedUserId})
+    await Card.deleteMany(
+        {userId: deletedUserId},
+    )
+
+    await Card.updateMany(
+        {likes: deletedUserId},
+        {$pull: {likes: deletedUserId}}
+    )
+
+    await Card.updateMany(
+        {'comments.userId': deletedUserId},
+        {$pull: {comments: {userId: deletedUserId}}}
+    )
+
+    await User.updateMany(
+        {following: deletedUserId},
+        {$pull: {following: deletedUserId}}
+    )
+
     return pickSafeUserFields(deleted)
 } 
 
