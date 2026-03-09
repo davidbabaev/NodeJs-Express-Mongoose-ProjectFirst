@@ -17,6 +17,7 @@ const pickSafeCardFields = (card) => {
         "createdAt",
         "_id",
         "userId",
+        "isBanned"
     ])
 }
 
@@ -108,6 +109,16 @@ const getFeedCards = async (userId) => {
     return feedCards.map(card => pickSafeCardFields(card))   
 }
 
+const banCard = async (cardId) => {
+    let card = await Card.findById(cardId);
+    if(!card) throw createError(404, 'Card not found');
+    
+    card.isBanned = !card.isBanned;
+
+    card = await card.save();
+    return pickSafeCardFields(card);
+}
+
 module.exports = {
     createNewCard, 
     getCards, 
@@ -119,4 +130,5 @@ module.exports = {
     addComment,
     removeComment,
     getFeedCards,
+    banCard,
 }

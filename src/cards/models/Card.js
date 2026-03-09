@@ -35,7 +35,11 @@ const CardSchema = new mongoose.Schema({
     userId: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
-    }
+    },
+    isBanned: {
+        type: Boolean,
+        default: false
+    },
 })
 
 const Card = mongoose.model('Card', CardSchema)

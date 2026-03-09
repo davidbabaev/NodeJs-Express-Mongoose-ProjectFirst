@@ -2,7 +2,7 @@
 
 const express = require('express');
 const router = express.Router();
-const {handleError} = require('../../utils/handleErrors')
+const {handleError, createError} = require('../../utils/handleErrors')
 const joiSchema = require('../validation/Joi/validateCardsWithJoi');
 
 const {
@@ -16,6 +16,7 @@ const {
     addComment,
     removeComment,
     getFeedCards,
+    banCard,
 } = require('../service/cardsSvc');
 const auth = require('../../auth/authService');
 
@@ -129,6 +130,17 @@ router.patch('/cards/:id/comments/:commentId', auth, async (req, res) => {
     try{
         let deleteComment = await removeComment(req.params.id, req.params.commentId)
         res.send(deleteComment)
+    }
+    catch(err){
+        handleError(res, err);
+    }
+})
+
+router.patch('/cards/:id/ban', auth, async (req,res) => {
+    try{
+        if(!req.user.isAdmin) throw createError(403, 'Only Admin can ban cards')
+        const bannedUser = await banCard(req.params.id)
+        res.send(bannedUser)
     }
     catch(err){
         handleError(res, err);
