@@ -12,19 +12,21 @@ const {connectToDB, disconnectDB} = require('../dbService');
 
 const mockUsers = [
     {
-    name: "David",
-    lastName: "Cohen",
-    email: "david@test.com",
-    password: "Test1234!",
-    phone: "050-1234567",
-    age: 28,
-    birthDate: "1997-05-12",
-    gender: "Male",
-    job: "Software Engineer",
-    aboutMe: "Full-stack developer who loves building apps",
-    profilePicture: "https://avatars.githubusercontent.com/u/126739366?v=4",
-    address: { country: "Israel", city: "Tel Aviv", street: "Rothschild", house: 42, zip: 12345 },
-    isAdmin: true
+        name: "David",
+        lastName: "Cohen",
+        email: "david@test.com",
+        password: "Test1234!",
+        phone: "050-1234567",
+        age: 28,
+        birthDate: "1997-05-12",
+        gender: "Male",
+        job: "Software Engineer",
+        aboutMe: "Full-stack developer who loves building apps",
+        profilePicture: "https://avatars.githubusercontent.com/u/126739366?v=4",
+        address: { country: "Israel", city: "Tel Aviv", street: "Rothschild", house: 42, zip: 12345 },
+        isAdmin: true,
+        createdAt: "2025-11-01T10:00:00.000Z",
+        lastLoginAt: "2026-03-12T08:00:00.000Z"  // today - DAU
     },
     {
         name: "Sarah",
@@ -39,7 +41,9 @@ const mockUsers = [
         aboutMe: "Visual thinker who speaks in colors and shapes. I design brands that people actually remember.",
         profilePicture: "https://images.pexels.com/photos/1130626/pexels-photo-1130626.jpeg?auto=compress&cs=tinysrgb&w=400",
         coverImage: "https://images.pexels.com/photos/1939485/pexels-photo-1939485.jpeg?auto=compress&cs=tinysrgb&w=800",
-        address: { country: "Israel", city: "Haifa", street: "Herzl", house: 12, zip: 31000 }
+        address: { country: "Israel", city: "Haifa", street: "Herzl", house: 12, zip: 31000 },
+        createdAt: "2025-11-15T10:00:00.000Z",
+        lastLoginAt: "2026-03-12T09:30:00.000Z"  // today - DAU
     },
     {
         name: "Mike",
@@ -54,7 +58,9 @@ const mockUsers = [
         aboutMe: "Building digital products that feel human. Obsessed with clean interfaces and good coffee.",
         profilePicture: "https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=400",
         coverImage: "https://images.pexels.com/photos/3182812/pexels-photo-3182812.jpeg?auto=compress&cs=tinysrgb&w=800",
-        address: { country: "United States", city: "New York", street: "Broadway", house: 100, zip: 10001 }
+        address: { country: "United States", city: "New York", street: "Broadway", house: 100, zip: 10001 },
+        createdAt: "2025-12-01T10:00:00.000Z",
+        lastLoginAt: "2026-03-12T07:15:00.000Z"  // today - DAU
     },
     {
         name: "Noa",
@@ -69,7 +75,9 @@ const mockUsers = [
         aboutMe: "Marketing specialist obsessed with brand storytelling. If it doesn't connect emotionally, it doesn't work.",
         profilePicture: "https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=400",
         coverImage: "https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&w=800",
-        address: { country: "Israel", city: "Jerusalem", street: "Jaffa", house: 18, zip: 91000 }
+        address: { country: "Israel", city: "Jerusalem", street: "Jaffa", house: 18, zip: 91000 },
+        createdAt: "2025-12-10T10:00:00.000Z",
+        lastLoginAt: "2026-03-10T14:00:00.000Z"  // this week - WAU
     },
     {
         name: "Ethan",
@@ -84,7 +92,9 @@ const mockUsers = [
         aboutMe: "Backend engineer who enjoys distributed systems and making things scale. London-based, originally from the US.",
         profilePicture: "https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=400",
         coverImage: "https://images.pexels.com/photos/574071/pexels-photo-574071.jpeg?auto=compress&cs=tinysrgb&w=800",
-        address: { country: "United Kingdom", city: "London", street: "Baker", house: 22, zip: 10002 }
+        address: { country: "United Kingdom", city: "London", street: "Baker", house: 22, zip: 10002 },
+        createdAt: "2025-12-20T10:00:00.000Z",
+        lastLoginAt: "2026-03-08T11:00:00.000Z"  // this week - WAU
     },
     {
         name: "Maya",
@@ -99,7 +109,9 @@ const mockUsers = [
         aboutMe: "Capturing moments one frame at a time. Natural light, real emotions, no filters.",
         profilePicture: "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=400",
         coverImage: "https://images.pexels.com/photos/1366919/pexels-photo-1366919.jpeg?auto=compress&cs=tinysrgb&w=800",
-        address: { country: "Israel", city: "Tel Aviv", street: "Dizengoff", house: 55, zip: 64332 }
+        address: { country: "Israel", city: "Tel Aviv", street: "Dizengoff", house: 55, zip: 64332 },
+        createdAt: "2026-01-05T10:00:00.000Z",
+        lastLoginAt: "2026-03-07T16:00:00.000Z"  // this week - WAU
     },
     {
         name: "James",
@@ -114,7 +126,9 @@ const mockUsers = [
         aboutMe: "Finance analyst by day, guitarist by night. Numbers and music have more in common than you'd think.",
         profilePicture: "https://images.pexels.com/photos/1681010/pexels-photo-1681010.jpeg?auto=compress&cs=tinysrgb&w=400",
         coverImage: "https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=800",
-        address: { country: "Canada", city: "Toronto", street: "King", house: 77, zip: 30301 }
+        address: { country: "Canada", city: "Toronto", street: "King", house: 77, zip: 30301 },
+        createdAt: "2026-01-15T10:00:00.000Z",
+        lastLoginAt: "2026-03-04T10:00:00.000Z"  // last week
     },
     {
         name: "Lior",
@@ -129,7 +143,9 @@ const mockUsers = [
         aboutMe: "Making the internet a safer place one bug at a time. CTF player on weekends.",
         profilePicture: "https://images.pexels.com/photos/1043474/pexels-photo-1043474.jpeg?auto=compress&cs=tinysrgb&w=400",
         coverImage: "https://images.pexels.com/photos/60504/security-protection-anti-virus-software-60504.jpeg?auto=compress&cs=tinysrgb&w=800",
-        address: { country: "Israel", city: "Beer Sheva", street: "Rager", house: 10, zip: 84100 }
+        address: { country: "Israel", city: "Beer Sheva", street: "Rager", house: 10, zip: 84100 },
+        createdAt: "2026-01-20T10:00:00.000Z",
+        lastLoginAt: "2026-03-03T09:00:00.000Z"  // last week
     },
     {
         name: "Sofia",
@@ -144,7 +160,9 @@ const mockUsers = [
         aboutMe: "Teacher who believes technology can transform learning. Barcelona born, globally curious.",
         profilePicture: "https://images.pexels.com/photos/1181686/pexels-photo-1181686.jpeg?auto=compress&cs=tinysrgb&w=400",
         coverImage: "https://images.pexels.com/photos/256417/pexels-photo-256417.jpeg?auto=compress&cs=tinysrgb&w=800",
-        address: { country: "Spain", city: "Barcelona", street: "Las Ramblas", house: 5, zip: 20001 }
+        address: { country: "Spain", city: "Barcelona", street: "Las Ramblas", house: 5, zip: 20001 },
+        createdAt: "2026-02-01T10:00:00.000Z",
+        lastLoginAt: "2026-03-01T12:00:00.000Z"  // last week
     },
     {
         name: "Omer",
@@ -159,7 +177,9 @@ const mockUsers = [
         aboutMe: "Turning raw data into stories that drive decisions. Python and espresso are my tools of choice.",
         profilePicture: "https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=400",
         coverImage: "https://images.pexels.com/photos/669615/pexels-photo-669615.jpeg?auto=compress&cs=tinysrgb&w=800",
-        address: { country: "Israel", city: "Ramat Gan", street: "Arlozorov", house: 33, zip: 52521 }
+        address: { country: "Israel", city: "Ramat Gan", street: "Arlozorov", house: 33, zip: 52521 },
+        createdAt: "2026-02-10T10:00:00.000Z",
+        lastLoginAt: "2026-02-20T10:00:00.000Z"  // older - inactive
     },
     {
         name: "Anna",
@@ -174,7 +194,9 @@ const mockUsers = [
         aboutMe: "Visual thinker who speaks in colors and shapes. Fresh out of design school and ready to make noise.",
         profilePicture: "https://images.pexels.com/photos/1310522/pexels-photo-1310522.jpeg?auto=compress&cs=tinysrgb&w=400",
         coverImage: "https://images.pexels.com/photos/1568607/pexels-photo-1568607.jpeg?auto=compress&cs=tinysrgb&w=800",
-        address: { country: "Germany", city: "Berlin", street: "Unter den Linden", house: 9, zip: 40001 }
+        address: { country: "Germany", city: "Berlin", street: "Unter den Linden", house: 9, zip: 40001 },
+        createdAt: "2026-02-15T10:00:00.000Z",
+        lastLoginAt: "2026-02-16T10:00:00.000Z"  // older - inactive
     },
     {
         name: "Yoav",
@@ -189,7 +211,9 @@ const mockUsers = [
         aboutMe: "Designing spaces where people actually want to be. Architecture is frozen music.",
         profilePicture: "https://images.pexels.com/photos/1516680/pexels-photo-1516680.jpeg?auto=compress&cs=tinysrgb&w=400",
         coverImage: "https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg?auto=compress&cs=tinysrgb&w=800",
-        address: { country: "Israel", city: "Herzliya", street: "Sokolov", house: 21, zip: 46100 }
+        address: { country: "Israel", city: "Herzliya", street: "Sokolov", house: 21, zip: 46100 },
+        createdAt: "2026-02-20T10:00:00.000Z",
+        lastLoginAt: "2026-02-22T10:00:00.000Z"  // older - inactive
     },
 ];
 
@@ -406,6 +430,13 @@ const createSeedData = async () => {
         await Card.deleteMany({});
         const saveCard = mockCards.map(async(mCard, index) => {
             mCard.userId = savedUsers[index % savedUsers.length]._id;
+            mCard.likes = savedUsers.slice(0, (index % savedUsers.length) + 1)
+            .map(u => u._id.toString())
+            // savedUsers.slice(0, 3)     → [davidObj, sarahObj, mikeObj]
+            // .map(u => u._id.toString()) → ["abc123", "def456", "ghi789"]
+
+            mCard.comments = savedUsers.slice(0, (index % savedUsers.length) + 1)
+            .map(u => ({userId: u._id, commentText: 'I actually enjoyed reading this more than I expected'}))
             const normalizedCard = normalizeCard(mCard);
             let newCard = new Card(normalizedCard);
             newCard = await newCard.save();

@@ -70,6 +70,10 @@ const UserSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    lastLoginAt: {
+        type: Date,
+        default: Date.now
+    }
 })
 
 const User = mongoose.model('User', UserSchema);

@@ -25,7 +25,8 @@ const pickSafeUserFields = (user) => {
         "_id",
         "following",
         "isAdmin",
-        "isBanned"
+        "isBanned",
+        "lastLoginAt"
     ]);
 }
 
@@ -50,13 +51,16 @@ const createNewUser = async (user) => {
 const loginUser = async ({email, password}) => {
     try{
         // find the user by email in mongoDB
-        const user = await User.findOne({email});
+        let user = await User.findOne({email});
         if(!user) throw new Error("Invalid email or password");
         if(user.isBanned) throw createError(400, "You Banned :("); 
 
         // compare plain password with hashed password form DB
         const isMatch = await comparePassword(password, user.password);
         if(!isMatch) throw new Error("Invalid email or password");
+
+        user.lastLoginAt = Date.now()
+        user = await user.save()
 
         // password correct --> generate JWT token
         const token = signNewToken(user);
