@@ -17,7 +17,6 @@ const comparePassword = async (password, hashedPassword) => {
     }
     catch(err){
         throw new Error(err.message);
-        
     }
 }
 

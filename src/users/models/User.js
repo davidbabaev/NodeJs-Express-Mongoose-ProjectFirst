@@ -5,7 +5,8 @@ const {
     DEFAULT_VALIDATOR, 
     PHONE, 
     PASSWORD,
-} = require('../helpers/userValidators') 
+} = require('../helpers/userValidators'); 
+const { defaults } = require('joi');
 
 const UserSchema = new mongoose.Schema({
     name: DEFAULT_VALIDATOR,
@@ -73,6 +74,10 @@ const UserSchema = new mongoose.Schema({
     lastLoginAt: {
         type: Date,
         default: Date.now
+    },
+    googleId: {
+        type: String,
+        default: null
     }
 })
 
