@@ -415,12 +415,12 @@ const createSeedData = async () => {
 
         // 3. Create users (map + Promise.all)
         const saveUser = mockUsers.map(async(mUser) => {
-                mUser.password = await generateUserPassword(mUser.password)
-                const normalizedUser = normalizeUser(mUser);
-                let newUser = new User(normalizedUser);
-                newUser = await newUser.save();
-                return newUser;
-            })
+            mUser.password = await generateUserPassword(mUser.password)
+            const normalizedUser = normalizeUser(mUser);
+            let newUser = new User(normalizedUser);
+            newUser = await newUser.save();
+            return newUser;
+        })
         // 4. Log success
         const savedUsers = await Promise.all(saveUser)
         // this wait for every user in the array to finish saving, then gives you the actual results. and you'll need savedUser later - why? because when you create cards, each card needs a user_id that points to a real saved user. where do you get those IDs? from the saved users that MongoDB gave _id values to.   

@@ -2,7 +2,7 @@
 
 const express = require('express');
 const router = express.Router();
-const {handleError, createError} = require('../../utils/handleErrors')
+const {handleError, createError} = require('../../utils/handleErrors');
 const joiSchema = require('../validation/Joi/validateCardsWithJoi');
 
 const {
