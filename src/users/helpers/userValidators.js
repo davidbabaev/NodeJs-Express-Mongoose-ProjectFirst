@@ -8,7 +8,6 @@ const URL = {
 
 const EMAIL = {
   type: String,
-  required: true,
   match: RegExp(/^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/),
   unique: true,
   trim: true,
@@ -16,7 +15,6 @@ const EMAIL = {
 
 const DEFAULT_VALIDATOR = {
   type: String,
-  required: true,
   minLength: 2,
   maxLength: 256,
   trim: true,
@@ -26,20 +24,17 @@ const DEFAULT_VALIDATOR = {
 // For phone numbers (String with regex pattern)
 const PHONE = {
   type: String,
-  required: true,
   match: RegExp(/0[0-9]{1,2}\-?\s?[0-9]{3}\s?[0-9]{4}/),
 };
 
 const PASSWORD = {
     type: String,
-    required: true,
     match: RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/)
 }
 
 // For actual numbers (like houseNumber, zip, bizNumber)
 const NUMBER = {
   type: Number,
-  required: true,
   min: 0,
 };
 

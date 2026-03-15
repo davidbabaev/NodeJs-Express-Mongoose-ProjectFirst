@@ -6,7 +6,6 @@ const {
     PHONE, 
     PASSWORD,
 } = require('../helpers/userValidators'); 
-const { defaults } = require('joi');
 
 const UserSchema = new mongoose.Schema({
     name: DEFAULT_VALIDATOR,
@@ -19,7 +18,6 @@ const UserSchema = new mongoose.Schema({
     age: {
         type: Number,
         max: 120,
-        required: true
     },
     job: {
         type: String,
@@ -31,7 +29,6 @@ const UserSchema = new mongoose.Schema({
     },
     birthDate: {
         type: Date,
-        required: true
     },
     aboutMe: {
         type: String,
@@ -40,7 +37,6 @@ const UserSchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now,
-        required: true
     },
     address: {
         country:{
