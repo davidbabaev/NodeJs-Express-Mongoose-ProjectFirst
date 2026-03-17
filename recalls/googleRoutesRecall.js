@@ -1,4 +1,4 @@
-require('express');
+const express = require('express');
 const router = require('../src/router/router');
 const passport = require('passport');
 const { signNewToken } = require('../src/auth/providers/jwt');
@@ -9,7 +9,7 @@ router.get('/auth/google', passport.authenticate('google', {scope: ['profile', '
 router.get('/auth/google/callback', passport.authenticate('google', {failureRedirect: '/login'}), async (req,res) => {
     try{
         const token = signNewToken(req.user)
-        res.redirect(`${process.env.CLIENT_URL}?token=${token}`)
+        res.send(token)
     }
     catch(err){
         handleError(res, err)
