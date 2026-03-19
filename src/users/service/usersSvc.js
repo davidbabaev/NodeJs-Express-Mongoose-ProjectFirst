@@ -6,6 +6,7 @@ const { createError } = require('../../utils/handleErrors');
 const normalizeUser = require('../helpers/normalizeUser');
 const Card = require('../../cards/models/Card');
 const { pickSafeCardFields } = require('../../cards/service/cardsSvc');
+const Notification = require('../../notifications/models/Notifications');
  
 const pickSafeUserFields = (user) => {
     return _.pick(user.toObject() , [
@@ -104,6 +105,8 @@ const followUser = async (userId, followingUserId) => {
     }
     else{
         user.following.push(followingUserId)
+        let notification = new Notification({actionType: 'follow', fromUser: userId, toUser: followingUserId})
+        notification = await notification.save()
     }
 
     const saveFollow = await user.save()
