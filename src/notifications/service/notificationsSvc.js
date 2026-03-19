@@ -8,6 +8,12 @@ const getNotifications = async (userId) => {
     return notifications;
 }
 
+const getNotification = async (notificationId) => {
+    const notification = await Notification.findById(notificationId);
+    if(!notification) throw createError(404, "Notifications not found")
+    return notification;
+}
+
 // Mark as read notification
 const markAsRead = async (userId) => {
     let notifications = await Notification.updateMany(
@@ -24,4 +30,4 @@ const deleteNotification = async (notificationId) => {
     return notification;
 }
 
-module.exports = {getNotifications, markAsRead, deleteNotification}
+module.exports = {getNotifications, markAsRead, deleteNotification, getNotification}
