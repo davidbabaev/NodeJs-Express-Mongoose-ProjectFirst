@@ -3,8 +3,9 @@ const { createError } = require('../../utils/handleErrors');
 
 // user's nptifications bell
 const getNotifications = async (userId) => {
-    const notifications = await Notification.find({toUser: userId});
+    const notifications = await Notification.find({toUser: userId}).sort({createdAt: -1}).limit(50);
     if(!notifications) throw createError(404, "Notifications not found")
+
     return notifications;
 }
 

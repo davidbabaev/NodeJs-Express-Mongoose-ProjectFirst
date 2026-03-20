@@ -16,7 +16,8 @@ async (accessToken, refreshToken, profile, done) => {
     try{
         const user = await User.findOne({googleId: profile.id})
         const fullName = profile.displayName.split(' ');
-
+        console.log(profile.photos[0].value);
+        
         if(!user){
             // build the raw data from google
             const googleUser = {
@@ -25,14 +26,15 @@ async (accessToken, refreshToken, profile, done) => {
                 lastName: fullName[1],
                 email: profile.emails[0].value,
                 profilePicture: profile.photos[0].value,
+                
             };
-
+            
             // normalize the data
             const normalizeData = normalizeUser(googleUser);
-
+            
             // create and save
             const newUser = await new User(normalizeData).save();
-
+            
             return done(null, newUser)
         }
         else{
