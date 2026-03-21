@@ -8,6 +8,7 @@ const corsPolicyMiddleware = (cors({
         "www.tzachCards.co.il",
         "http://127.0.0.1:5500/index.html",
         "http://localhost:5173",
+        "http://localhost:8181",
     ],
 }))
 

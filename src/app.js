@@ -23,6 +23,10 @@ app.use(router); // connect router to app
 
 const PORT = process.env.PORT || 8181;
 
+app.get('/{*splat}', (req,res) => {
+    res.sendFile(__dirname + '/public/index.html')
+})
+
 // this line handle errors global on our all files. prevent server collapse
 app.use((err, req, res, next ) => {
     console.log('ERROR: ', err.message);
