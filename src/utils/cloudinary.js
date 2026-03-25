@@ -1,0 +1,1 @@
+// connects to Cloudinary and uploads the file, returns a URL.

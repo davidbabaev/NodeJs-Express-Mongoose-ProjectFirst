@@ -19,6 +19,7 @@ const {
     banCard,
 } = require('../service/cardsSvc');
 const auth = require('../../auth/authService');
+const upload = require('../../middlewares/multer');
 
 router.get('/cards', async (req, res) => {
     try{
@@ -54,7 +55,7 @@ router.get('/cards/:id',async (req, res) => {
     }
 })
 
-router.post('/cards', auth, async (req, res) => {
+router.post('/cards', auth, upload.single('image'), async (req, res) => {
     try{
         const { error } = joiSchema.validate(req.body);
         if(error){
