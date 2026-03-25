@@ -4,6 +4,8 @@ const express = require('express');
 const router = express.Router();
 const {handleError, createError} = require('../../utils/handleErrors');
 const joiSchema = require('../validation/Joi/validateCardsWithJoi');
+const upload = require('../../middlewares/multer');
+const uploadToCloudinary = require('../../utils/cloudinary');
 
 const {
     createNewCard, 
@@ -19,7 +21,6 @@ const {
     banCard,
 } = require('../service/cardsSvc');
 const auth = require('../../auth/authService');
-const upload = require('../../middlewares/multer');
 
 router.get('/cards', async (req, res) => {
     try{
@@ -62,7 +63,12 @@ router.post('/cards', auth, upload.single('image'), async (req, res) => {
             return res.status(400).send(error.details[0].message);
         }
 
-        let newCard = await createNewCard(req.body, req.user.userId);
+        if(!req.file){
+            return res.status(400).send('Image not found')
+        }
+        const imageUrl = await uploadToCloudinary(req.file.buffer, "cards")
+
+        let newCard = await createNewCard({...req.body, image:imageUrl}, req.user.userId);
         
         res.send(newCard);
     }
