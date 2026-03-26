@@ -1,7 +1,8 @@
 const normalizeCard = (card) => {
     return{
         ...card, // keep everything the user sent
-        image: card.image || "https://via.placeholder.com/300",
+        mediaUrl: card.mediaUrl || "https://via.placeholder.com/300",
+        mediaType: card.mediaType || "image",
         likes: card.likes || [],
         category: card.category || "general"
     }

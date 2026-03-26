@@ -19,7 +19,11 @@ const CardSchema = new mongoose.Schema({
     title: String,
     content: String,
     web: URL,
-    image: URL,
+    mediaUrl: URL,
+    mediaType: {
+        type: String,
+        enum: ['image', 'video']
+    },
     location: {
         type: String,
         trim: true,

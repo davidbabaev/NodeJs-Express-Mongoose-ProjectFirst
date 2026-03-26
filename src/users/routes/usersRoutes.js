@@ -14,10 +14,12 @@ const {
     followUser,
     cardsFeed,
     banUser, 
-    promoteUserToAdmin
+    promoteUserToAdmin,
 } = require('../service/usersSvc');
 const validateUser = require('../validation/joi/validateUserWithJoi');
 const auth = require('../../auth/authService');
+const { uploadImageOnly } = require('../../middlewares/multer');
+const uploadToCloudinary = require('../../utils/cloudinary');
 
 
 router.get('/users', async (req, res) => {
@@ -40,18 +42,38 @@ router.get('/users/:id', async (req, res) => {
     }
 })
 
-router.post('/users', async (req, res) => {
-    try{
-        const {error} = validateUser(req.body)
-        if(error) return res.status(400).send(error.details[0].message);
-        const newUser = await createNewUser(req.body);
-        res.send(newUser);
-    }
-    catch(err){
-        handleError(res, err);
-        console.log(err.message);
-        
-    }
+router.post('/users', uploadImageOnly.fields([
+        {name: 'profilePicture', maxCount: 1},
+        {name: 'coverImage', maxCount: 1}
+    ]) ,async (req, res) => {
+        try{
+            const {error} = validateUser(req.body)
+            if(error) return res.status(400).send(error.details[0].message);
+            
+            let profilePictureUrl;
+            let coverImageUrl;
+            
+            if(req.files['profilePicture']){
+                //file exists
+                profilePictureUrl = await uploadToCloudinary(req.files['profilePicture']?.[0].buffer, "users")
+            }
+            
+            if(req.files['coverImage']){
+                coverImageUrl = await uploadToCloudinary(req.files['coverImage']?.[0].buffer, "users")
+            }
+            
+            let newUser = await createNewUser({
+                ...req.body,
+                profilePicture: profilePictureUrl,
+                coverImage: coverImageUrl,
+            });
+
+            res.send(newUser);
+        }
+        catch(err){
+            handleError(res, err);
+            console.log(err.message);
+        }
 })
 
 router.post('/users/login', async (req,res) => {
@@ -64,20 +86,51 @@ router.post('/users/login', async (req,res) => {
     }
 })
 
-router.put('/users/:id', auth ,async (req, res) => {
-    try{
-        if(req.user.userId === req.params.id || req.user.isAdmin){
-            let updatedUser = await updateUser(req.params.id, req.body)
-            console.log("Updated User: ", updatedUser);
-            
-            res.send(updatedUser);
-        }
-        else{
-            res.status(403).send('You not allowed to edit this')
-        }
-    }   
-    catch(err){
-        handleError(res, err);
+router.put('/users/:id', auth, uploadImageOnly.fields([
+        {name: 'profilePicture', maxCount: 1},
+        {name: 'coverImage', maxCount: 1}
+    ]) ,async (req, res) => {
+        try{
+            const user = await getUser(req.params.userId); 
+
+            if(req.user.userId === req.params.id || req.user.isAdmin){
+
+                let defaultProfile = user.profilePicture; 
+                let defaultCover = user.coverImage; 
+                let profilePictureUrl;
+                let coverImageUrl;
+
+                if(req.files['profilePicture']){
+                    profilePictureUrl = await uploadToCloudinary(req.files['profilePicture']?.[0].buffer, "users")
+                }
+                else{
+                    profilePictureUrl = defaultProfile
+                }
+
+                if(req.files['coverImage']){
+                    coverImageUrl = await uploadToCloudinary(req.files['coverImage']?.[0].buffer, "users")
+                }
+                else{
+                    coverImageUrl = defaultCover
+                }
+
+                let updatedUser = await updateUser(req.params.id, 
+                    {
+                        ...req.body,
+                        profilePicture: profilePictureUrl,
+                        coverImage: coverImageUrl
+                    }
+                )
+                console.log("Updated User: ", updatedUser);
+                
+                res.send(updatedUser);
+            }
+            else{
+                res.status(403).send('You not allowed to edit this')
+            }
+        }   
+        catch(err){
+            handleError(res, err);
     }
 })
 

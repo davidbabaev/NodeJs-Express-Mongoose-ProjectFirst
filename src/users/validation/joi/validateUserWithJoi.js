@@ -9,8 +9,6 @@ const validateUser = (user) => {
         email: Joi.string().regex(RegExp(/^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/)).required(),
         password: Joi.string().regex(RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/)).required(),
         phone: Joi.string().regex(RegExp(/0[0-9]{1,2}\-?\s?[0-9]{3}\s?[0-9]{4}/)).required(),
-        profilePicture: Joi.string().uri().regex(RegExp(imageUrlRegExp)),
-        coverImage: Joi.string().uri().regex(RegExp(imageUrlRegExp)),
         age: Joi.number().integer().required(),
         job: Joi.string().max(50),
         gender: Joi.string().max(10),

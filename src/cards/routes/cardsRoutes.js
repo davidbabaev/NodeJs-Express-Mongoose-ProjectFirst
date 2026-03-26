@@ -4,7 +4,7 @@ const express = require('express');
 const router = express.Router();
 const {handleError, createError} = require('../../utils/handleErrors');
 const joiSchema = require('../validation/Joi/validateCardsWithJoi');
-const upload = require('../../middlewares/multer');
+const {upload} = require('../../middlewares/multer');
 const uploadToCloudinary = require('../../utils/cloudinary');
 
 const {
@@ -56,7 +56,7 @@ router.get('/cards/:id',async (req, res) => {
     }
 })
 
-router.post('/cards', auth, upload.single('image'), async (req, res) => {
+router.post('/cards', auth, upload.single('media'), async (req, res) => {
     try{
         const { error } = joiSchema.validate(req.body);
         if(error){
@@ -64,12 +64,17 @@ router.post('/cards', auth, upload.single('image'), async (req, res) => {
         }
 
         if(!req.file){
-            return res.status(400).send('Image not found')
+            return res.status(400).send('File not found')
         }
-        const imageUrl = await uploadToCloudinary(req.file.buffer, "cards")
-
-        let newCard = await createNewCard({...req.body, image:imageUrl}, req.user.userId);
-        
+        const mediaUrl = await uploadToCloudinary(req.file.buffer, "cards")
+        let newCard = await createNewCard(
+            {
+                ...req.body, 
+                mediaUrl:mediaUrl, 
+                mediaType: req.file.mimetype.startsWith("image/") ? "image" : "video"
+            }
+            , req.user.userId
+        );
         res.send(newCard);
     }
     catch(err){
@@ -78,11 +83,32 @@ router.post('/cards', auth, upload.single('image'), async (req, res) => {
     }
 })
 
-router.put('/cards/:id', auth, async (req, res) => {
+router.put('/cards/:id', auth, upload.single('media'), async (req, res) => {
     try{
         const card = await getCard(req.params.id)
+
         if(req.user.userId === card.userId.toString() || req.user.isAdmin){
-            let updatedCard = await updateCard(req.params.id, req.body);
+
+            let img = card.mediaUrl;
+            let media = card.mediaType;
+            let mediaUrl;
+            let mediaType;
+            
+            if(req.file){
+                mediaUrl = await uploadToCloudinary(req.file.buffer, "cards")
+                mediaType = req.file.mimetype.startsWith("video/") ? "video" : "image"
+            }
+            else{
+                mediaUrl = img
+                mediaType = media
+            }
+
+            let updatedCard = await updateCard(req.params.id, 
+                {
+                    ...req.body,
+                    mediaUrl: mediaUrl,
+                    mediaType: mediaType
+                });
             res.send(pickSafeCardFields(updatedCard));
         }
         else{
