@@ -139,18 +139,18 @@ const deleteUser = async (deletedUserId) => {
     return pickSafeUserFields(deleted)
 } 
 
-const cardsFeed = async (userId) => {
-    const user = await User.findById(userId);
-    if(!user) throw createError(404, "user not found");
+// const cardsFeed = async (userId) => {
+//     const user = await User.findById(userId);
+//     if(!user) throw createError(404, "user not found");
 
-    const followingList = user.following;
+//     const followingList = user.following;
 
-    const feedCards = await Card.find({ userId: {$in: followingList}})
-    .limit(30)
-    .sort({createdAt: -1})
+//     const feedCards = await Card.find({ userId: {$in: followingList}})
+//     .limit(30)
+//     .sort({createdAt: -1})
 
-    return feedCards.map(card => pickSafeCardFields(card))
-}
+//     return feedCards.map(card => pickSafeCardFields(card))
+// }
 
 const banUser = async(bannedUserId) => {
 
@@ -182,7 +182,7 @@ module.exports = {
     loginUser, 
     pickSafeUserFields, 
     followUser, 
-    cardsFeed, 
+    // cardsFeed, 
     banUser, 
     promoteUserToAdmin
 };

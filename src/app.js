@@ -29,6 +29,10 @@ app.get('/{*splat}', (req,res) => {
 
 // this line handle errors global on our all files. prevent server collapse
 app.use((err, req, res, next ) => {
+    if(err.code === "LIMIT_FILE_SIZE"){
+        return res.status(400).send("File it too large. Maximum size is 50M")
+    }
+
     console.log('ERROR: ', err.message);
     res.status(500).send('Internal error of the server')
 })

@@ -44,17 +44,6 @@ router.get('/cards/feed', auth, async (req,res) => {
     }
 })
 
-router.get('/cards/:id',async (req, res) => {
-    try{
-        const card = await getCard(req.params.id); // -> dynamic!
-        res.send(pickSafeCardFields(card));
-    }
-    catch(err){
-        handleError(res, err);
-        console.log(err.message);
-        
-    }
-})
 
 router.post('/cards', auth, upload.single('media'), async (req, res) => {
     try{
@@ -62,7 +51,7 @@ router.post('/cards', auth, upload.single('media'), async (req, res) => {
         if(error){
             return res.status(400).send(error.details[0].message);
         }
-
+        
         if(!req.file){
             return res.status(400).send('File not found')
         }
@@ -80,6 +69,18 @@ router.post('/cards', auth, upload.single('media'), async (req, res) => {
     catch(err){
         handleError(res, err);
         console.log(err.message);
+    }
+})
+
+router.get('/cards/:id',async (req, res) => {
+    try{
+        const card = await getCard(req.params.id); // -> dynamic!
+        res.send(pickSafeCardFields(card));
+    }
+    catch(err){
+        handleError(res, err);
+        console.log(err.message);
+        
     }
 })
 

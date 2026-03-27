@@ -115,7 +115,9 @@ const getFeedCards = async (userId) => {
     if(!user) throw createError(404, "User not found");
 
     // find cards where userId is in this array
-    const feedCards = await Card.find({userId: {$in: user.following}}).sort({createdAt: -1});
+    const feedCards = await Card.find({userId: {$in: user.following}})
+    .limit(30)
+    .sort({createdAt: -1});
 
     return feedCards.map(card => pickSafeCardFields(card));   
 }

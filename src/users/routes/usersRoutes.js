@@ -12,7 +12,7 @@ const {
     deleteUser,
     loginUser,
     followUser,
-    cardsFeed,
+    // cardsFeed,
     banUser, 
     promoteUserToAdmin,
 } = require('../service/usersSvc');
@@ -91,7 +91,7 @@ router.put('/users/:id', auth, uploadImageOnly.fields([
         {name: 'coverImage', maxCount: 1}
     ]) ,async (req, res) => {
         try{
-            const user = await getUser(req.params.userId); 
+            const user = await getUser(req.params.id); 
 
             if(req.user.userId === req.params.id || req.user.isAdmin){
 
@@ -163,16 +163,16 @@ router.delete('/users/:id', auth , async (req, res) => {
     }
 })
 
-router.get('/cards/feed', auth, async (req, res) => {
-    try{
-        // logged-in user
-        const feedCardsFollowing = await cardsFeed(req.user.userId);
-        res.send(feedCardsFollowing)
-    }
-    catch(err){
-        handleError(res, err)
-    }
-})
+// router.get('/cards/feed', auth, async (req, res) => {
+//     try{
+//         // logged-in user
+//         const feedCardsFollowing = await cardsFeed(req.user.userId);
+//         res.send(feedCardsFollowing)
+//     }
+//     catch(err){
+//         handleError(res, err)
+//     }
+// })
 
 router.patch('/users/:id/ban', auth, async (req,res) => {
     try{
