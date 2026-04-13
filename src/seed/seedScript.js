@@ -399,6 +399,7 @@ const mockCards = [
         title: "Full Stack is the Future",
         content: "There's a version of this debate where frontend devs and backend devs argue forever. And then there's the version where one person builds the whole thing and ships it in a weekend. Learn the full stack. Context switching is a superpower.",
         category: "Technology",
+        web: 'https://www.jetbrains.com/idea/',
         mediaUrl: "https://images.pexels.com/photos/270348/pexels-photo-270348.jpeg?auto=compress&cs=tinysrgb&w=800",
         location: "Tel Aviv",
     },

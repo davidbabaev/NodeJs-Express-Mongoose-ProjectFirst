@@ -37,7 +37,27 @@ app.use((err, req, res, next ) => {
     res.status(500).send('Internal error of the server')
 })
 
-app.listen(PORT, () => {
+// handlign Socket.io connction:
+
+const http = require('http');
+const server = http.createServer(app);
+
+const {Server} = require('socket.io');
+const io = new Server(server, {
+    cors: {
+        origin: [
+            "http://localhost:5173",
+            "http://localhost:8181",
+            "https://db-social-media-app.onrender.com"
+        ]
+    }
+})
+
+io.on('connection', (socket) => {
+    console.log('A user connceted:', socket.id);
+})
+
+server.listen(PORT, () => {
     console.log(chalk.yellow('App is listening to port', PORT));
     connectToDB();
 });
