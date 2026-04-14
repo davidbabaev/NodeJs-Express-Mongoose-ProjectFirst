@@ -12,7 +12,6 @@ const Comments = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
-
 })
 
 const CardSchema = new mongoose.Schema({
