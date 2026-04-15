@@ -3,26 +3,27 @@ const {
     createNewMessage,
     getMessages,
     getChats
-} = require("../service/chatSvc");
+} = require('../service/chatSvc');
+
 
 module.exports = (io) => {
     io.on('connection', (socket) => {
-        console.log("A user conncted:", socket.id);
-        // all events go inside here
-
-        socket.on('join-chat', (roomId) => {
-            socket.join(roomId);
-        });
-
-        socket.on('send-message', async (data) => {
-            const message = await createNewMessage(data, data.userId)
-            io.to(data.conversationId).emit('recieve-message', message)
-        });
-
         socket.on('get-chats', async (userId) => {
             const chats = await getChats(userId);
-            socket.emit('chats-list', chats);
+            socket.emit('recieve-chats', chats)
         });
 
-    });
+        socket.on('send-message', async (message, userId) => {
+            const conversation = await getOrCreateConversation(userId, message.toUser)
+            const newMessage = await createNewMessage(
+                {...message, conversationId: conversation._id}, userId
+            )
+            io.emit('recieve-message', newMessage)
+        })
+
+        socket.on('get-messages', async (conversationId) => {
+            const messages = await getMessages(conversationId);
+            socket.emit('recieve-messages', messages)
+        })
+    })
 }
