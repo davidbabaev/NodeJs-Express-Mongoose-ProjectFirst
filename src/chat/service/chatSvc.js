@@ -1,6 +1,7 @@
 const Conversation = require('../models/Conversation');
 const Message = require('../models/Message');
 const createError = require('../../utils/handleErrors');
+const { default: mongoose } = require('mongoose');
 
 const getOrCreateConversation = async (fromUserId, toUserId) => {
     const conversation = await Conversation.findOne({
@@ -35,12 +36,14 @@ const getMessages = async (conversationId) => {
 }
 
 const getChats = async (userId) => {
+    console.log('getChats called with userId:', userId, typeof userId)
     const chats = await Conversation.find({
         $or: [
-            {fromUser: userId},
-            {toUser: userId}
+            {fromUser: new mongoose.Types.ObjectId(userId)},
+            {toUser: new mongoose.Types.ObjectId(userId)}
         ]
     }).sort({updatedAt: -1});
+    console.log('getChats found:', chats.length, 'conversations')
     return chats;
 }
 
