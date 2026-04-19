@@ -21,7 +21,15 @@ const getOrCreateConversation = async (fromUserId, toUserId) => {
 const createNewMessage = async (message, userId) => {
     try{
         let newMessage = new Message({...message, userId})
-        newMessage = await newMessage.save()
+        newMessage = await newMessage.save();
+
+        // new: bump the parent conversation's updatedAt
+        await Conversation.findByIdAndUpdate(
+            message.conversationId,
+            {}, // not field changes
+            {timestamps: true} // force updatedAt to refresh
+        )
+
         return newMessage;
     }
     catch(err){
