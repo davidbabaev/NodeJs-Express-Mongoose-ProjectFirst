@@ -5,33 +5,46 @@ const {
     getChats
 } = require('../service/chatSvc');
 
+const jwt = require('jsonwebtoken')
+
 
 module.exports = (io) => {
-    io.on('connection', (socket) => {
-        socket.on('get-chats', async (userId) => {
-            const chats = await getChats(userId);
-            socket.emit('recieve-chats', chats)
-        });
+    // middleware: runs once per socket, before "connection" event
+    io.use((socket, next) => {
+        const token = socket.handsShake.auth.token;
 
-        // NEW: when a user identifies themselves, join their personal room
-        socket.on('register-user', (userId) => {
-            socket.join(userId);
-        });
-        
-        socket.on('send-message', async (message, userId) => {
+        if(!token){
+            return next(new Error('No token provided'))
+        }
+
+        try{
+            const decoded = jwt.verify(token, process.env.JWT_SECRET)
+            socket.userId = decoded._id;
+            next();
+        }
+        catch(err){
+            next(new Error('invelid token'))
+        }
+    })
+
+    io.on('connection', (socket) => {
+
+        socket.join(socket.userId)
+
+        socket.on('send-message', async (message) => {
+            const userId = socket.userId;
+
             const conversation = await getOrCreateConversation(userId, message.toUser)
             const newMessage = await createNewMessage(
                 {...message, conversationId: conversation._id}, userId
             )
-            // io.emit('recieve-message', newMessage) <-- send to everyone connected the app
-            
-            // io.to(conversation._id.toString()).emit('recieve-message', newMessage)
-
-            // emit to BOTH:
-            // the sender's room AND the recipient's room
             io.to(userId).to(message.toUser).emit('recieve-message', newMessage);
-
         })
+
+        socket.on('get-chats', async () => {
+            const chats = await getChats(socket.userId);
+            socket.emit('recieve-chats', chats)
+        });
 
         socket.on('get-messages', async (conversationId) => {
             // socket.join(conversationId);
@@ -40,3 +53,50 @@ module.exports = (io) => {
         })
     })
 }
+
+
+
+
+
+
+
+
+
+
+
+
+/* const {
+    getOrCreateConversation,
+    createNewMessage,
+    getMessages,
+    getChats
+} = require('../service/chatSvc');
+
+const jwt = require('jsonwebtoken');
+
+module.exports = (io) => {
+    // on the second place we need to have use with jwt check?
+    //on the first place we need to chet which user is connected?
+
+    io.on('connection', (socket) => {
+
+    })
+}
+ */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
