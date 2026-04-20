@@ -11,7 +11,7 @@ const jwt = require('jsonwebtoken')
 module.exports = (io) => {
     // middleware: runs once per socket, before "connection" event
     io.use((socket, next) => {
-        const token = socket.handsShake.auth.token;
+        const token = socket.handshake.auth.token;
 
         if(!token){
             return next(new Error('No token provided'))
