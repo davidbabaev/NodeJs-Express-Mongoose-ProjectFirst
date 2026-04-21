@@ -1,4 +1,4 @@
-const {
+/* const {
     getOrCreateConversation,
     createNewMessage,
     getMessages,
@@ -52,7 +52,7 @@ module.exports = (io) => {
             socket.emit('recieve-messages', messages)
         })
     })
-}
+} */
 
 
 
@@ -65,7 +65,7 @@ module.exports = (io) => {
 
 
 
-/* const {
+const {
     getOrCreateConversation,
     createNewMessage,
     getMessages,
@@ -75,14 +75,30 @@ module.exports = (io) => {
 const jwt = require('jsonwebtoken');
 
 module.exports = (io) => {
-    // on the second place we need to have use with jwt check?
-    //on the first place we need to chet which user is connected?
+    // verify JWT here
+    // if bad: disconnect them
+    io.use((socket, next) => {
+        const token = socket.handshake.auth.token;
+
+        if(!token) return next(new Error('No token provided'))
+
+        try{
+            const decoded = jwt.verify(token, process.env.JWT_SECRET);
+            socket.userId = decoded.userId;
+            socket.isAdmin = decoded.isAdmin;
+
+            next();
+        }
+        catch(err){
+            return next(new Error('Invalid token'))
+        }
+    })
 
     io.on('connection', (socket) => {
-
+        
     })
 }
- */
+
 
 
 
