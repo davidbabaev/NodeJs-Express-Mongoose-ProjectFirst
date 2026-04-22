@@ -36,8 +36,9 @@ const createNewCard = async (card, userId) => {
     }
 }
 
-const getCards = async () => {
-        const cards = await Card.find()
+const getCards = async (isAdmin) => {
+        const filter = isAdmin ? {} : {isBanned: false}
+        const cards = await Card.find(filter)
         return cards.map(card => pickSafeCardFields(card))
 }
 
@@ -110,12 +111,17 @@ const removeComment = async (cardId, commentId) => {
     return pickSafeCardFields(saveComment)
 }
 
-const getFeedCards = async (userId) => {
+const getFeedCards = async (userId, isAdmin) => {
+    const filter = {userId: {$in: user.following}}
+    if(!isAdmin){
+        filter.isBanned = false;
+    }
+
     const user = await User.findById(userId);
     if(!user) throw createError(404, "User not found");
 
     // find cards where userId is in this array
-    const feedCards = await Card.find({userId: {$in: user.following}})
+    const feedCards = await Card.find(filter)
     .limit(30)
     .sort({createdAt: -1});
 

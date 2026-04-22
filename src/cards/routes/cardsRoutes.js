@@ -22,10 +22,10 @@ const {
 } = require('../service/cardsSvc');
 const auth = require('../../auth/authService');
 
-router.get('/cards', async (req, res) => {
+router.get('/cards', auth ,async (req, res) => {
     try{
-        const cards = await getCards();
-        res.send(cards);
+            const cards = await getCards();
+            res.send(cards);
     }
     catch(err){
         handleError(res, err);
@@ -40,7 +40,6 @@ router.get('/cards/feed', auth, async (req,res) => {
     catch(err){
         handleError(res, err)
         console.log(err.message);
-        
     }
 })
 
