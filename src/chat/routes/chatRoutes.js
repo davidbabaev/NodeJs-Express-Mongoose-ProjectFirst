@@ -95,7 +95,18 @@ module.exports = (io) => {
     })
 
     io.on('connection', (socket) => {
-        
+        socket.join(socket.userId) // <- join personal room immediately on connect
+
+        socket.on('send-message', async (message) => {
+            const conversation = await getOrCreateConversation(socket.userId, message.toUser)
+
+            const newMessage = await createNewMessage(
+                {...message, conversationId: conversation._id},
+                socket.userId
+            )
+
+            io.to(socket.userId).to(message.toUser).emit('receive-message', newMessage)
+        })
     })
 }
 
