@@ -21,9 +21,13 @@ const {
     banCard,
 } = require('../service/cardsSvc');
 const auth = require('../../auth/authService');
+const optionalAuth = require('../../auth/optionalAuth');
 
 router.get('/cards', auth ,async (req, res) => {
     try{
+        if(req.user.isAdmin){
+
+        }
             const cards = await getCards();
             res.send(cards);
     }
@@ -32,7 +36,7 @@ router.get('/cards', auth ,async (req, res) => {
     }
 })
 
-router.get('/cards/feed', auth, async (req,res) => {
+router.get('/cards/feed', optionalAuth, async (req,res) => {
     try{
         const feedCards = await getFeedCards(req.user.userId)
         res.send(feedCards) // <- send them back
