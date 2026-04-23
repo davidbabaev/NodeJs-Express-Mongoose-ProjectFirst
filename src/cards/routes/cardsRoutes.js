@@ -25,20 +25,17 @@ const optionalAuth = require('../../auth/optionalAuth');
 
 router.get('/cards', auth ,async (req, res) => {
     try{
-        if(req.user.isAdmin){
-
-        }
-            const cards = await getCards();
-            res.send(cards);
+        const cards = await getCards(req.user.isAdmin);
+        res.send(cards);
     }
     catch(err){
         handleError(res, err);
     }
 })
 
-router.get('/cards/feed', optionalAuth, async (req,res) => {
+router.get('/cards/feed', auth, async (req,res) => {
     try{
-        const feedCards = await getFeedCards(req.user.userId)
+        const feedCards = await getFeedCards(req.user.userId, req.user.isAdmin)
         res.send(feedCards) // <- send them back
     }
     catch(err){

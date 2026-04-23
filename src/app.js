@@ -57,7 +57,7 @@ const io = new Server(server, {
 //     console.log('A user connceted:', socket.id);
 // })
 
-const chatRoutes = require('./chat/routes/chatRoutes');
+const chatRoutes = require('../src/chat/routes/chatSocket');
 chatRoutes(io)
 
 server.listen(PORT, () => {

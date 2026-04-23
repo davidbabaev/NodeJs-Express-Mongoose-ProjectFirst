@@ -1,6 +1,6 @@
 const Conversation = require('../models/Conversation');
 const Message = require('../models/Message');
-const createError = require('../../utils/handleErrors');
+const {createError} = require('../../utils/handleErrors');
 const { default: mongoose } = require('mongoose');
 
 const getOrCreateConversation = async (fromUserId, toUserId) => {

@@ -112,13 +112,13 @@ const removeComment = async (cardId, commentId) => {
 }
 
 const getFeedCards = async (userId, isAdmin) => {
+    const user = await User.findById(userId);
+    if(!user) throw createError(404, "User not found");
+    
     const filter = {userId: {$in: user.following}}
     if(!isAdmin){
         filter.isBanned = false;
     }
-
-    const user = await User.findById(userId);
-    if(!user) throw createError(404, "User not found");
 
     // find cards where userId is in this array
     const feedCards = await Card.find(filter)
