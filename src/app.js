@@ -53,12 +53,13 @@ const io = new Server(server, {
     }
 })
 
-// io.on('connection', (socket) => {
-//     console.log('A user connceted:', socket.id);
-// })
+// socket setup
+const chatSocket = require('./chat/routes/chatSocket');
+chatSocket(io)
 
-const chatRoutes = require('../src/chat/routes/chatSocket');
-chatRoutes(io)
+// HTTP routes
+const chatRoutes = require('./chat/routes/chatRoutes')
+app.use(chatRoutes(io))
 
 server.listen(PORT, () => {
     console.log(chalk.yellow('App is listening to port', PORT));

@@ -60,9 +60,25 @@ const getChats = async (userId) => {
     return chats;
 }
 
+const deleteChat = async (deleterUserId, conversationId) => {
+    const conversation = await Conversation.findById(conversationId);
+    if(!conversation) throw createError(404, 'Conversation not found');
+    
+    if(!(conversation.fromUser.toString() === deleterUserId || 
+        conversation.toUser.toString() === deleterUserId)
+    ){
+        throw createError(403, 'Not allowed to delete this conversation')
+    }
+    
+    await Message.deleteMany({conversationId: conversationId})
+    await Conversation.findByIdAndDelete(conversationId)
+    return conversation;
+}
+
 module.exports = {
     getOrCreateConversation,
     createNewMessage,
     getMessages,
-    getChats
+    getChats,
+    deleteChat
 }
