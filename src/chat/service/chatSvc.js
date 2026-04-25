@@ -4,6 +4,11 @@ const {createError} = require('../../utils/handleErrors');
 const { default: mongoose } = require('mongoose');
 
 const getOrCreateConversation = async (fromUserId, toUserId) => {
+
+    if(fromUserId.toString() === toUserId.toString()){
+        throw createError(400, 'cannot start a conversation with yourself');
+    }
+
     const conversation = await Conversation.findOne({
         $or: [
             {fromUser: fromUserId, toUser: toUserId},
