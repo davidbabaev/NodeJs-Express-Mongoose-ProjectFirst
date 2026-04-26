@@ -30,6 +30,7 @@ module.exports = (io) => {
 
     io.on('connection', (socket) => {
         socket.join(socket.userId) // <- join personal room immediately on connect
+        console.log('user connected and joined room:', socket.userId)
 
         socket.on('send-message', async (message) => {
             const conversation = await getOrCreateConversation(socket.userId, message.toUser)
