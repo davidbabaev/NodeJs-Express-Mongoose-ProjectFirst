@@ -41,8 +41,6 @@ module.exports = (io) => {
 
             io.to(socket.userId).to(message.toUser).emit('receive-message', newMessage)
         })
-
-
     })
 }
 

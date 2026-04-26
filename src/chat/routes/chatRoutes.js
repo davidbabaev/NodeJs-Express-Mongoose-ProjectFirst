@@ -34,6 +34,13 @@ module.exports = (io) => {
     router.delete('/chats/:conversationId', auth, async (req, res) => {
         try{
             const deletedChat = await deleteChat(req.user.userId, req.params.conversationId);
+
+            const otherUserId = deletedChat.fromUser.toString() === req.user.userId 
+                ? deletedChat.toUser
+                : deletedChat.fromUser 
+
+            io.to(otherUserId).emit('deleted-conversation', deletedChat._id)
+
             res.send(deletedChat)
         }
         catch(err){
