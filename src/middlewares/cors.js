@@ -10,7 +10,7 @@ const corsPolicyMiddleware = (cors({
         "http://localhost:5173",
         "http://localhost:8181",
         "https://db-social-media-app.onrender.com",
-        "https://mirage-frontend-tfxf.onrender.com/"
+        "https://mirage-frontend-tfxf.onrender.com"
     ],
 }))
 
