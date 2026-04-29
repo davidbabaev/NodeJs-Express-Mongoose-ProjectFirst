@@ -12,7 +12,7 @@ app.use(passport.initialize());
 
 app.use(corsPolicyMiddleware)
 app.use(express.json());
-app.use(express.static(__dirname + '/public'));
+// app.use(express.static(__dirname + '/public'));
 app.use(morgan("dev"));
 
 const router = require('./router/router');
@@ -33,7 +33,9 @@ const io = new Server(server, {
             "http://localhost:5173",
             "http://localhost:8181",
             "https://db-social-media-app.onrender.com",
-            "https://mirage-frontend-tfxf.onrender.com"
+            "https://mirage-frontend-tfxf.onrender.com",
+            "https://mirage42.com",
+            "https://www.mirage42.com",
         ]
     }
 })
@@ -49,9 +51,9 @@ const chatRoutes = require('./chat/routes/chatRoutes')
 app.use(chatRoutes(io))
 
 // Catch-all (SPA fallback) - after all real routes
-app.get('/{*splat}', (req,res) => {
-    res.sendFile(__dirname + '/public/index.html')
-})
+// app.get('/{*splat}', (req,res) => {
+//     res.sendFile(__dirname + '/public/index.html')
+// })
 
 // this line handle errors global on our all files. prevent server collapse
 app.use((err, req, res, next ) => {
