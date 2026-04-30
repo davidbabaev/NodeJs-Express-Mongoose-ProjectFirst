@@ -34,7 +34,6 @@ const createNewMessage = async (message, userId) => {
             {}, // not field changes
             {timestamps: true} // force updatedAt to refresh
         )
-
         return newMessage;
     }
     catch(err){
