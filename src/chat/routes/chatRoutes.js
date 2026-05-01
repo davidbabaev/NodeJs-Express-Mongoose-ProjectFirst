@@ -9,7 +9,7 @@ const {
 } = require('../service/chatSvc');
 const auth = require('../../auth/authService');
 const { handleError } = require('../../utils/handleErrors');
-const upload = require('../../middlewares/multer');
+const {upload} = require('../../middlewares/multer');
 const uploadToCloudinary = require('../../utils/cloudinary');
 
 module.exports = (io) => {
@@ -53,12 +53,24 @@ module.exports = (io) => {
 
     router.post('/chat/upload-media', auth, upload.single('media'), async (req, res) => {
         try{
-            if(!req.file) return res.status(400).send('File not found')
+            if(!req.file) return res.status(400).send('File not found');
+
+            const mediaUrl = await uploadToCloudinary(req.file.buffer, "messages");
+            let newMessage = await createNewMessage(
+                {
+                    ...req.body,
+                    mediaUrl: mediaUrl,
+                    mediaType: req.file.mimetype.startsWith("image/") ? "image" : "video"
+                },
+                req.user.userId
+            );
             
+            res.send(newMessage);
         }
         catch(err){
             handleError(res, err)
         }
     })
+
     return router;
 }
