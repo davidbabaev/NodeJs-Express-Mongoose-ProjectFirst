@@ -56,24 +56,30 @@ module.exports = (io) => {
         try{
             if(!req.file) return res.status(400).send('File not found');
 
+            // 1. get or create conversation first
+            const conversation = await getOrCreateConversation(
+                req.user.userId,
+                req.body.toUser
+            );
+
+            // 2. upload file to cloudinary
             const mediaUrl = await uploadToCloudinary(req.file.buffer, "messages");
+
+            // 3. create the message with the conversatinoId we just resloved
             let newMessage = await createNewMessage(
                 {
                     ...req.body,
+                    conversationId: conversation._id,
                     mediaUrl: mediaUrl,
                     mediaType: req.file.mimetype.startsWith("image/") ? "image" : "video"
                 },
                 req.user.userId
             );
 
-            const conversation = await Conversation.findById(newMessage.conversationId)
-
-            const otherUser = 
-            conversation.toUser.toString() === newMessage.userId.toString() 
-            ? conversation.fromUser // toUser is me, so other user is fronUser
-            : conversation.toUser; // toUser is them, so other it toUser
-
-            io.to(newMessage.userId.toString()).to(otherUser.toString()).emit('receive-message', newMessage)
+            // 4. Brodcast - we already have toUser from the request body
+            io.to(newMessage.userId.toString())
+              .to(otherUser.toString())
+              .emit('receive-message', newMessage)
 
             res.send(newMessage);
         }
