@@ -77,8 +77,8 @@ module.exports = (io) => {
             );
 
             // 4. Brodcast - we already have toUser from the request body
-            io.to(newMessage.userId.toString())
-              .to(otherUser.toString())
+            io.to(req.user.userId.toString())
+              .to(req.body.toUser.toString())
               .emit('receive-message', newMessage)
 
             res.send(newMessage);
