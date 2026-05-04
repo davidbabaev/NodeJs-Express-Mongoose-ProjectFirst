@@ -23,9 +23,9 @@ const {
 const auth = require('../../auth/authService');
 const optionalAuth = require('../../auth/optionalAuth');
 
-router.get('/cards', auth ,async (req, res) => {
+router.get('/cards', optionalAuth ,async (req, res) => {
     try{
-        const cards = await getCards(req.user.isAdmin);
+        const cards = await getCards(req.user?.isAdmin);
         res.send(cards);
     }
     catch(err){
