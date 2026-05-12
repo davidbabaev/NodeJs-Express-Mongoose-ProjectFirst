@@ -143,17 +143,6 @@ router.delete('/users/:id', auth , async (req, res) => {
     }
 })
 
-// router.get('/cards/feed', auth, async (req, res) => {
-//     try{
-//         // logged-in user
-//         const feedCardsFollowing = await cardsFeed(req.user.userId);
-//         res.send(feedCardsFollowing)
-//     }
-//     catch(err){
-//         handleError(res, err)
-//     }
-// })
-
 router.patch('/users/:id/ban', auth, async (req,res) => {
     try{
         if(!req.user.isAdmin) throw createError(403, 'Only admin Can ban users!')

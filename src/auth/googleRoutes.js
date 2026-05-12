@@ -8,7 +8,7 @@ router.get('/auth/google', passport.authenticate('google', {scope: ['profile', '
 
 router.get('/auth/google/callback', 
     passport.authenticate('google', {
-        failureRedirect: '/login',
+        failureRedirect: `${process.env.CLIENT_URL}/login?error=banned`,
         session: false
     }), 
     async (req,res) => {

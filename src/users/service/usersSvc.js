@@ -3,7 +3,7 @@ const _ = require('lodash');
 const {generateUserPassword, comparePassword} = require('../helpers/bcrypt');
 const {signNewToken} = require('../../auth/providers/jwt');
 const { createError } = require('../../utils/handleErrors');
-const normalizeUser = require('../helpers/normalizeUser');
+const normalizesser = require('../helpers/normalizeUser');
 const Card = require('../../cards/models/Card');
 const { pickSafeCardFields } = require('../../cards/service/cardsSvc');
 const Notification = require('../../notifications/models/Notifications');
@@ -81,7 +81,7 @@ const getUsers = async () => {
 
 const getUser = async (userId) => {
         const user = await User.findById(userId);
-        if(!user) throw createError(404, "User not found")
+        if(!user) throw createError(401, "User not found")
         return pickSafeUserFields(user) 
 }
 
@@ -138,19 +138,6 @@ const deleteUser = async (deletedUserId) => {
 
     return pickSafeUserFields(deleted)
 } 
-
-// const cardsFeed = async (userId) => {
-//     const user = await User.findById(userId);
-//     if(!user) throw createError(404, "user not found");
-
-//     const followingList = user.following;
-
-//     const feedCards = await Card.find({ userId: {$in: followingList}})
-//     .limit(30)
-//     .sort({createdAt: -1})
-
-//     return feedCards.map(card => pickSafeCardFields(card))
-// }
 
 const banUser = async(bannedUserId) => {
 

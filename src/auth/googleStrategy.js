@@ -17,13 +17,15 @@ async (accessToken, refreshToken, profile, done) => {
         const user = await User.findOne({googleId: profile.id})
         const fullName = profile.displayName.split(' ');
         console.log(profile.photos[0].value);
-        
+
+        if(user?.isBanned) return done(null, false, {message: "You Banned :("})
+
         if(!user){
             // build the raw data from google
             const googleUser = {
                 googleId: profile.id,
                 name: fullName[0],
-                lastName: fullName[1],
+                lastName: fullName.slice(1).join(' '),
                 email: profile.emails[0].value,
                 profilePicture: profile.photos[0].value,
                 
